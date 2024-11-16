@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.dilruk</groupId>
-	<artifactId>movie-ticket-booking-backend-service</artifactId>
+	<artifactId>movieticketbooking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TicketCorner</name>
+	<name>TicketCorner Backend</name>
 	<description>Backend service for the TicketCorner Movie Ticket Booking System built with Spring Boot</description>
 	<url/>
 	<licenses>
