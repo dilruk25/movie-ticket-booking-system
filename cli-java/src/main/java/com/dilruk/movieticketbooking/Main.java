@@ -17,7 +17,7 @@ public class Main {
         Main.welcome();
         Main.login();
         Main.menu();
-
+        scanner.close();
     }
 
     /**
@@ -94,13 +94,17 @@ public class Main {
 
             String option = scanner.nextLine();
 
+
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
                 case "1":
-                    SimulationManager.startSimulation();
+                    SystemConfig.addSimulationConfigurations();
+                    SystemConfig.startConfirmation(scanner);
                     break;
                 case "2":
+                    SimulationManager.setIsRunning(false);
                     System.out.println("Simulation has successfully stopped");
+                    System.exit(0);
                     break;
                 case "3":
                     System.out.println("Simulation configuration settings has opened");

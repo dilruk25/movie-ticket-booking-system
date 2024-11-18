@@ -1,52 +1,86 @@
 package com.dilruk.movieticketbooking.util;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.model.Customer;
-import com.dilruk.movieticketbooking.model.TicketPool;
-import com.dilruk.movieticketbooking.model.Vendor;
+import com.dilruk.movieticketbooking.model.consumer.Customer;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
+import com.dilruk.movieticketbooking.model.producer.Vendor;
 
-public class SimulationManager implements Runnable {
+public class SimulationManager {
 
-    // Vendors' ticket release count per day
-    private static int ticketReleaseRatePerSecond;
-    // Customers' ticket purchase count per day
-    private static int customerRetrievalRatePerSecond;
+    // To stop the simulation process
+    private static boolean isRunning = false;
+    private final TicketPool ticketPool;
+    private final int customerRetrievalRate;
+    private final int totalTickets;
+    private final int ticketReleaseRate;
+    Thread vendorThread;
+    Thread customerThread;
 
-    public SimulationManager() {
-        ticketReleaseRatePerSecond = SystemConfig.getTicketReleaseRatePerSecond();
-        customerRetrievalRatePerSecond = SystemConfig.getCustomerRetrievalRatePerSecond();
-        SimulationManager.startTicketPoolSimulation(100); // Initialize the ticket pool with a certain capacity
+    public SimulationManager(TicketPool ticketPool) {
+        this.ticketPool = ticketPool;
+        this.customerRetrievalRate = SystemConfig.getCustomerRetrievalRate();
+        this.totalTickets = SystemConfig.getTotalTickets();
+        this.ticketReleaseRate = SystemConfig.getTicketReleaseRate();
     }
 
-    public static void startSimulation() {
-        System.out.println("\nSimulation has successfully started");
-
-        SystemConfig.addSimulationConfigurations();
-        System.out.println("\nConfigurations have added successfully");
-        SimulationManager.createVendorsForSimulation(5); // Assign 5 vendors by default
-        SimulationManager.startTicketPoolSimulation(5); // Assign 5 vendors by default (Read line 37, 38)
-        SimulationManager.startCustomerSimulation(100); // Assign customer count by default
-
+    /**
+     * Retrieves the current state of the simulation (running or stopped).
+     *
+     * @return true if the simulation is running, otherwise false.
+     */
+    public static boolean getIsRunning() {
+        return SimulationManager.isRunning;
     }
 
-    public static void createVendorsForSimulation(int vendorCount) {
-        for (int i = 0; i < vendorCount; i++) {
-            Vendor vendor = new Vendor();
+    // Setters
+    public static void setIsRunning(boolean isRunning) {
+        SimulationManager.isRunning = isRunning;
+    }
+
+    public void startSimulation() {
+        if (isRunning) {
+            System.out.println("----------------------------------------");
+            System.out.println(" Simulation is already running.");
+            System.out.println("----------------------------------------\n");
+            return;
         }
+        System.out.println("\n----------------------------------------");
+        System.out.println(" Configuring the system...");
+        System.out.println(" Starting the simulation...");
+        System.out.println("----------------------------------------");
+
+        vendorThread = new Thread(new Vendor(ticketPool, totalTickets, ticketReleaseRate));
+        customerThread = new Thread(new Customer(ticketPool, customerRetrievalRate));
+
+        vendorThread.start();
+        customerThread.start();
+        System.out.println("Successfully Started the simulation...");
     }
 
-    // Consider each vendor creates ticket pool for each movie
-    // Consider there's only one movie event has for all users to reduce complexity for now
-    public static void startTicketPoolSimulation(int vendorCount) {
-        TicketPool ticketPool = new TicketPool();
-    }
+    public void stopSimulation() {
+        System.out.println("Stopping the simulation...");
 
-    public static void startCustomerSimulation(int customerCount) {
-        Customer customer = new Customer();
-    }
+        if (vendorThread != null) {
+            vendorThread.interrupt();
+        }
+        if (customerThread != null) {
+            customerThread.interrupt();
+        }
 
-    @Override
-    public void run() {
 
+        // Wait for threads to finish
+        try {
+            if (vendorThread != null) {
+                vendorThread.join();
+            }
+            if (customerThread != null) {
+                customerThread.join();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Simulation stopping interrupted.");
+        }
+
+        System.out.println("Simulation stopped.");
     }
 }

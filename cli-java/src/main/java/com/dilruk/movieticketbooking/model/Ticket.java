@@ -4,17 +4,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
-// Here I want to create objects independently just to simulate the process.
-// Hence, no relationship with entities like vendor to ticket
+/**
+ * Represent a ticket for a movie.
+ * Simulates the process of issuing tickets and purchasing tickets without involving Vendors or Customers
+ */
 public class Ticket {
 
-    private static long ticketCount = 1;
+    /**
+     * Use static variable to track the number of tickets created.
+     * For thread safety, use {@link AtomicLong}, which allows the counter to
+     * increment safely and correctly, even when multiple threads are creating tickets at the same time.*/
+    private static final AtomicLong ticketCount = new AtomicLong(0);
 
     private final String ticketId;
     private final String movieTitle;
-    private final String seatLetter;
-    private final int seatNumber;
     private final LocalDate date;
     private final LocalTime time;
     private final int price;
@@ -26,48 +31,52 @@ public class Ticket {
      * Due to the complexity when assigning seat coordinates in a simulation, leave them.
      */
     public Ticket() {
+        // Increment the ticket count atomically
+        ticketCount.incrementAndGet();
+
         Random random = new Random();
+
         this.ticketId = String.valueOf(UUID.randomUUID());
-        this.movieTitle = "Movie" + ticketCount;
-        this.seatLetter = null; // Leave assigning due to increasing complexity for simulation// Leave assigning due to increasing complexity for simulation
-        this.seatNumber = -1; // Leave assigning due to increasing complexity for simulation
+        this.movieTitle = "Test Movie";
         this.date = LocalDate.now();
         this.time = LocalTime.now();
         this.price = random.nextInt(800, 4500);
-        ticketCount++;
+
     }
 
-    // Getters and Setters are removed because they are unnecessary for simulation purposes.
-
-    public static long getTicketCount() {
-        return ticketCount;
+    // Get total created ticket count (Used AtomicLong for thread safety)
+    public static AtomicLong getTicketCount() {
+        return Ticket.ticketCount;
     }
 
     public String getTicketId() {
-        return ticketId;
+        return this.ticketId;
     }
 
     public String getMovieTitle() {
-        return movieTitle;
-    }
-
-    public String getSeatLetter() {
-        return seatLetter;
-    }
-
-    public int getSeatNumber() {
-        return seatNumber;
+        return this.movieTitle;
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public LocalTime getTime() {
-        return time;
+        return this.time;
     }
 
     public int getPrice() {
-        return price;
+        return this.price;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId='" + ticketId + '\'' +
+                ", movieTitle='" + movieTitle + '\'' +
+                ", date=" + date +
+                ", time=" + time +
+                ", price=" + price +
+                '}';
     }
 }
