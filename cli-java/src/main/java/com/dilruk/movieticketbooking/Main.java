@@ -1,6 +1,7 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class Main {
                 System.out.println("----------------------------------------");
                 System.out.println(" System has been locked.");
                 System.out.println(" Please re-run the CLI");
-                System.out.println("----------------------------------------\n");
+                System.out.println("----------------------------------------");
                 return;
             }
 
@@ -82,7 +83,7 @@ public class Main {
     public static void menu() {
 
         while (true) {
-            System.out.println("=============== Main Menu ==============\n");
+            System.out.println("\n=============== Main Menu ==============\n");
 
             System.out.println("[1] Start simulation");
             System.out.println("[2] Stop simulation");
@@ -92,19 +93,38 @@ public class Main {
             System.out.println("[5] Configure web application settings");
             System.out.print("[0] Exit\n> ");
 
-            String option = scanner.nextLine();
+            String option = scanner.nextLine().trim();
 
 
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
                 case "1":
-                    SystemConfig.addSimulationConfigurations();
-                    SystemConfig.startConfirmation(scanner);
+                    if (SimulationManager.getIsRunning()) {
+                        System.out.println("----------------------------------------");
+                        System.out.println(" Simulation is already running.");
+                        System.out.println("----------------------------------------\n");
+                    } else {
+                        System.out.println("----------------------------------------");
+                        System.out.println(" Starting simulation...");
+                        System.out.println("----------------------------------------\n");
+
+                        SystemConfig.addSimulationConfig(); // Configure settings
+                        startConfirmation(); // Confirm to proceed simulation
+                    }
                     break;
                 case "2":
-                    SimulationManager.setIsRunning(false);
-                    System.out.println("Simulation has successfully stopped");
-                    System.exit(0);
+                    if (!SimulationManager.getIsRunning()) {
+                        System.out.println("----------------------------------------");
+                        System.out.println(" Simulation is not running.");
+                        System.out.println("----------------------------------------");
+                    } else {
+                        System.out.println("----------------------------------------");
+                        System.out.println(" Stopping simulation...");
+                        System.out.println("----------------------------------------\n");
+
+                        // TODO: need to fix here
+                        // simulationManager.stopSimulation(); // Stop the simulation
+                    }
                     break;
                 case "3":
                     System.out.println("Simulation configuration settings has opened");
@@ -114,7 +134,7 @@ public class Main {
                     break;
                 case "5":
                     System.out.println("Web Configuration has opened");
-                    SystemConfig.addSimulationConfigurations();
+                    SystemConfig.addSimulationConfig();
                     break;
                 case "0":
                     System.out.println("You have exit from the cli");
@@ -125,6 +145,43 @@ public class Main {
                     System.out.println(" " + option + " is not a valid input");
                     System.out.println("----------------------------------------\n");
                     break;
+            }
+        }
+    }
+
+    /**
+     * Handles user commands to confirm configuration setup.
+     */
+    private static void startConfirmation() {
+        while (true) {
+            System.out.println("Type 'start' to begin simulation, 'menu' to return to the main menu, or 'exit' to quit.");
+            System.out.print("Enter command: ");
+
+            // Remove all leading and trailing spaces and converted to lowercase
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            switch (input) {
+
+                case "start":
+                    TicketPool ticketPool = new TicketPool();
+                    SimulationManager simulationManager = new SimulationManager(ticketPool);
+                    simulationManager.startSimulation();
+                    return;
+
+                case "menu":
+                    Main.menu();
+                    return;
+
+                case "exit":
+                    System.out.println("Exiting system...");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("----------------------------------------");
+                    System.out.println("Invalid command.");
+                    System.out.println("Please enter 'start', 'menu', or 'exit'.");
+                    System.out.println("----------------------------------------\n");
             }
         }
     }
