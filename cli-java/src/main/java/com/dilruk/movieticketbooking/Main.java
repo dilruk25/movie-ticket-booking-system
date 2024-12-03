@@ -9,9 +9,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "admin";
-
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -36,12 +33,14 @@ public class Main {
      * After 3 attempts, need to rerun the program
      */
     public static void login() {
+        // Has a default username and password for the CLI
+        final String USERNAME = "admin";
+        final String PASSWORD = "admin";
 
         // Remaining attempts
         int remainingAttempts = 3;
 
         System.out.println("Please enter your credentials:\n");
-
 
         while (true) {
             if (remainingAttempts == 0) {
@@ -72,8 +71,6 @@ public class Main {
                 System.out.println(" Username/password is incorrect.\n " + remainingAttempts + " attempts left.");
                 System.out.println("----------------------------------------\n");
             }
-
-
         }
     }
 
