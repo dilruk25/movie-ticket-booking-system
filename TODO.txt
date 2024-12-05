@@ -1,3 +1,0 @@
-Java -CLI
-[1] Fix stop simulation
-[2] Fix go back to menu after simulation complete
