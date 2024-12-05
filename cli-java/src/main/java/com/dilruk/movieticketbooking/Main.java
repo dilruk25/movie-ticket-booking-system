@@ -1,13 +1,16 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.core.model.TicketPool;
-import com.dilruk.movieticketbooking.service.SimulationManager;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
+import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
+
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "admin";
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -29,13 +32,10 @@ public class Main {
     }
 
     /**
-     * Has a default username and password to run cli.
      * Handles user login with a maximum of 3 attempts.
-     * After 3 attempts, need to rerun the program.
+     * After 3 attempts, need to rerun the program
      */
     public static void login() {
-        final String USERNAME = "admin";
-        final String PASSWORD = "admin";
 
         // Remaining attempts
         int remainingAttempts = 3;
@@ -81,20 +81,20 @@ public class Main {
      * Displays the menu and handle user input.
      */
     public static void menu() {
-        System.out.println("\n=============== Main Menu ==============\n");
 
-        System.out.println("[1] Start simulation");
-        System.out.println("[2] Stop simulation");
-        System.out.println("[3] Configure Simulation settings");
-        System.out.println("[4] Real-Time Monitoring");
-        System.out.println("----------------------------------------");
-        System.out.println("[5] Configure web application settings");
-        System.out.println("[0] Exit");
+        while (true) {
+            System.out.println("\n=============== Main Menu ==============\n");
 
-        String option = "";
-        do {
-            System.out.print("Enter the option: ");
-            option = scanner.nextLine().trim();
+            System.out.println("[1] Start simulation");
+            System.out.println("[2] Stop simulation");
+            System.out.println("[3] Configure Simulation settings");
+            System.out.println("[4] Real-Time Monitoring");
+            System.out.println("----------------------------------------");
+            System.out.println("[5] Configure web application settings");
+            System.out.print("[0] Exit\n> ");
+
+            String option = scanner.nextLine().trim();
+
 
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
@@ -146,7 +146,7 @@ public class Main {
                     System.out.println("----------------------------------------\n");
                     break;
             }
-        } while (!option.equals("0"));
+        }
     }
 
     /**

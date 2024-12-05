@@ -1,9 +1,9 @@
-package com.dilruk.movieticketbooking.service;
+package com.dilruk.movieticketbooking.util;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.core.model.TicketPool;
-import com.dilruk.movieticketbooking.threads.Customer;
-import com.dilruk.movieticketbooking.threads.Vendor;
+import com.dilruk.movieticketbooking.model.consumer.Customer;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
+import com.dilruk.movieticketbooking.model.producer.Vendor;
 
 public class SimulationManager {
 

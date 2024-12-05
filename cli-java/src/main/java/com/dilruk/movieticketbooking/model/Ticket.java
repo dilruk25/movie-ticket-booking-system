@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.core.model;
+package com.dilruk.movieticketbooking.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,8 +15,7 @@ public class Ticket {
     /**
      * Use static variable to track the number of tickets created.
      * For thread safety, use {@link AtomicLong}, which allows the counter to
-     * increment safely and correctly, even when multiple threads are creating tickets at the same time.
-     */
+     * increment safely and correctly, even when multiple threads are creating tickets at the same time.*/
     private static final AtomicLong ticketCount = new AtomicLong(0);
 
     private final String ticketId;

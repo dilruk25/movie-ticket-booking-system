@@ -1,8 +1,8 @@
-package com.dilruk.movieticketbooking.threads;
+package com.dilruk.movieticketbooking.model.producer;
 
-import com.dilruk.movieticketbooking.core.model.Ticket;
-import com.dilruk.movieticketbooking.core.model.TicketPool;
-import com.dilruk.movieticketbooking.service.SimulationManager;
+import com.dilruk.movieticketbooking.model.Ticket;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
+import com.dilruk.movieticketbooking.util.SimulationManager;
 
 public class Vendor implements Runnable {
 
@@ -30,7 +30,7 @@ public class Vendor implements Runnable {
             }
             try {
                 ticketPool.addTicket();
-                Thread.sleep(1000 / ticketReleaseRate);
+                Thread.sleep(1000/ticketReleaseRate);
             } catch (InterruptedException e) {
                 System.out.println("\nVendor threads have been manually interrupted.");
                 Thread.currentThread().interrupt();

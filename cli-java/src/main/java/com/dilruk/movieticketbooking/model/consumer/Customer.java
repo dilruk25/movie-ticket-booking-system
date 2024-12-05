@@ -1,12 +1,12 @@
-package com.dilruk.movieticketbooking.threads;
+package com.dilruk.movieticketbooking.model.consumer;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.core.model.Ticket;
-import com.dilruk.movieticketbooking.core.model.TicketPool;
+import com.dilruk.movieticketbooking.model.Ticket;
+import com.dilruk.movieticketbooking.model.pool.TicketPool;
 
 public class Customer implements Runnable {
-    private final TicketPool ticketPool;
-    private final int customerRetrievalRate;
+    private TicketPool ticketPool;
+    private int customerRetrievalRate;
 
     private String userName;
 
