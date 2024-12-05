@@ -20,6 +20,8 @@ public class Multiplex { // The cinema building that has more theatres
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String multiplexID;
+
     private String name;
 
     private String location;

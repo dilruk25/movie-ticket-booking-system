@@ -1,6 +1,5 @@
 package com.dilruk.movieticketbooking.user.models;
 
-import com.dilruk.movieticketbooking.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
