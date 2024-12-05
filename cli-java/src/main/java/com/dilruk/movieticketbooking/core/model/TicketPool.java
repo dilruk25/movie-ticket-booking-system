@@ -1,8 +1,7 @@
-package com.dilruk.movieticketbooking.model.pool;
+package com.dilruk.movieticketbooking.core.model;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.model.Ticket;
-import com.dilruk.movieticketbooking.util.SimulationManager;
+import com.dilruk.movieticketbooking.service.SimulationManager;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,6 +19,8 @@ public class TicketPool {
     private final Queue<Ticket> availableTicketList;
     // Use for assigning the exact SimulationManager object to TicketPool object
     private SimulationManager simulationManager;
+    // Buying ticket count
+    private AtomicLong buyingTicketCount = new AtomicLong(0);
 
     public TicketPool() {
         ticketPoolCount.incrementAndGet();
@@ -55,11 +56,11 @@ public class TicketPool {
         Ticket ticket = new Ticket(); // Creates ticket assigning random values
 
         System.out.println("----------------------------------------");
-        System.out.println("Total tickets created: " + Ticket.getTicketCount().get());
 
         availableTicketList.add(ticket);
 
-        System.out.println("\nTicket added: " + ticket);
+        System.out.println("Ticket added: " + ticket);
+        System.out.println("\nTotal tickets created: " + Ticket.getTicketCount().get());
         System.out.println("Available tickets: " + availableTicketList.size());
         System.out.println("----------------------------------------\n");
         notifyAll();
@@ -75,9 +76,11 @@ public class TicketPool {
         }
         // To display the removed ticket from the list
         Ticket boughtTicket = availableTicketList.poll();
+        buyingTicketCount.incrementAndGet();
 
         System.out.println("----------------------------------------");
         System.out.println("Buy ticket successfully: " + boughtTicket);
+        System.out.println("\nBought tickets: " + buyingTicketCount);
         System.out.println("Available tickets: " + availableTicketList.size());
         System.out.println("----------------------------------------\n");
 

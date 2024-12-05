@@ -1,18 +1,8 @@
 package com.dilruk.movieticketbooking.util;
 
-import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class ConsoleUtil {
-    private List<String> elements;
-
-    public static String getRandomString(List<String> elements) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(0, elements.size());
-
-        return elements.get(randomIndex);
-    }
 
     /**
      * Prompts the user for a positive integer value.
