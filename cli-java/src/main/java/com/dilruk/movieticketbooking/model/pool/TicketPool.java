@@ -21,6 +21,8 @@ public class TicketPool {
     // Use for assigning the exact SimulationManager object to TicketPool object
     private SimulationManager simulationManager;
 
+    private 
+
     public TicketPool() {
         ticketPoolCount.incrementAndGet();
         this.totalTickets = SystemConfig.getTotalTickets();
@@ -55,20 +57,20 @@ public class TicketPool {
         Ticket ticket = new Ticket(); // Creates ticket assigning random values
 
         System.out.println("----------------------------------------");
-        System.out.println("Total tickets created: " + Ticket.getTicketCount().get());
+        System.out.println(" Total tickets created: " + Ticket.getTicketCount().get());
 
         availableTicketList.add(ticket);
 
-        System.out.println("\nTicket added: " + ticket);
-        System.out.println("Available tickets: " + availableTicketList.size());
+        System.out.println(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
+        System.out.println(" Available tickets: " + availableTicketList.size());
         System.out.println("----------------------------------------\n");
         notifyAll();
     }
 
     public synchronized void buyTicket() throws InterruptedException {
         if (availableTicketList.isEmpty()) {
-            System.out.println("----------------------------------------");
-            System.out.println("No Tickets available. Waiting ...");
+            System.out.println("\n----------------------------------------");
+            System.out.println(" No Tickets available. Waiting ...");
             System.out.println("----------------------------------------\n");
 
             wait(); // Wait until a ticket is added
@@ -77,8 +79,8 @@ public class TicketPool {
         Ticket boughtTicket = availableTicketList.poll();
 
         System.out.println("----------------------------------------");
-        System.out.println("Buy ticket successfully: " + boughtTicket);
-        System.out.println("Available tickets: " + availableTicketList.size());
+        System.out.println(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
+        System.out.println(" Available tickets: " + availableTicketList.size());
         System.out.println("----------------------------------------\n");
 
         notifyAll(); // Notify threads waiting to add tickets

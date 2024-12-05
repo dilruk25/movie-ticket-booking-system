@@ -4,6 +4,7 @@ import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,9 +13,10 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Main.welcome();
-        Main.login();
-        Main.menu();
+        welcome();
+        login();
+        menu();
+
         scanner.close();
     }
 
@@ -25,7 +27,7 @@ public class Main {
         System.out.println("=========================================");
         System.out.println("|             TicketCorner              |");
         System.out.println("=========================================\n");
-        System.out.println("Welcome to TicketCounter Admin Panel....\n");
+        System.out.println(" Welcome to TicketCounter Admin Panel....\n");
     }
 
     /**
@@ -40,21 +42,14 @@ public class Main {
         // Remaining attempts
         int remainingAttempts = 3;
 
-        System.out.println("Please enter your credentials:\n");
+        System.out.println(" Please enter your credentials:\n");
 
-        while (true) {
-            if (remainingAttempts == 0) {
-                System.out.println("----------------------------------------");
-                System.out.println(" System has been locked.");
-                System.out.println(" Please re-run the CLI");
-                System.out.println("----------------------------------------");
-                return;
-            }
+        while (remainingAttempts > 0) {
 
-            System.out.print("Enter username: ");
+            System.out.print(" Enter username: ");
             String username = scanner.nextLine();
 
-            System.out.print("Enter password: ");
+            System.out.print(" Enter password: ");
             String password = scanner.nextLine();
 
             // Use for null safety instead of using username.equals(USERNAME)
@@ -64,14 +59,19 @@ public class Main {
                 System.out.println("----------------------------------------\n");
                 return;
 
-            }
-            if (remainingAttempts > 0) {
+            } else {
                 remainingAttempts--; // Post increment
                 System.out.println("----------------------------------------");
                 System.out.println(" Username/password is incorrect.\n " + remainingAttempts + " attempts left.");
                 System.out.println("----------------------------------------\n");
             }
         }
+        System.out.println("----------------------------------------");
+        System.out.println(" System has been locked.");
+        System.out.println(" Please re-run the CLI");
+        System.out.println("----------------------------------------");
+
+        System.exit(0); // Exit the program with a normal status
     }
 
     /**
@@ -82,16 +82,25 @@ public class Main {
         while (true) {
             System.out.println("\n=============== Main Menu ==============\n");
 
-            System.out.println("[1] Start simulation");
-            System.out.println("[2] Stop simulation");
-            System.out.println("[3] Configure Simulation settings");
-            System.out.println("[4] Real-Time Monitoring");
+            System.out.println(" [1] Start simulation");
+            System.out.println(" [2] Stop simulation");
+            System.out.println(" [3] Configure Simulation settings");
+            System.out.println(" [4] Real-Time Monitoring");
             System.out.println("----------------------------------------");
-            System.out.println("[5] Configure web application settings");
-            System.out.print("[0] Exit\n> ");
+            System.out.println(" [5] Configure web application settings");
+            System.out.print(" [0] Exit\n> ");
 
-            String option = scanner.nextLine().trim();
+            List<String> menuSelections = List.of("1", "2", "3", "4", "5", "0");
 
+//            String option = scanner.nextLine().trim();
+            String option = "1"; //TODO: REMOVE THIS
+
+            if (!menuSelections.contains(option)) {
+                System.out.println("----------------------------------------");
+                System.out.println(" \"" + option + "\" is not a valid input");
+                System.out.println("----------------------------------------\n");
+                continue;
+            }
 
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
@@ -101,14 +110,11 @@ public class Main {
                         System.out.println(" Simulation is already running.");
                         System.out.println("----------------------------------------\n");
                     } else {
-                        System.out.println("----------------------------------------");
-                        System.out.println(" Starting simulation...");
-                        System.out.println("----------------------------------------\n");
-
                         SystemConfig.addSimulationConfig(); // Configure settings
-                        startConfirmation(); // Confirm to proceed simulation
+                        startConfirmation(); // Get confirmation to proceed simulation
                     }
                     break;
+
                 case "2":
                     if (!SimulationManager.getIsRunning()) {
                         System.out.println("----------------------------------------");
@@ -137,12 +143,8 @@ public class Main {
                     System.out.println("You have exit from the cli");
                     System.exit(0); // Exit the program with a normal status
                     break;
-                default:
-                    System.out.println("----------------------------------------");
-                    System.out.println(" " + option + " is not a valid input");
-                    System.out.println("----------------------------------------\n");
-                    break;
             }
+            return;
         }
     }
 
@@ -151,11 +153,22 @@ public class Main {
      */
     private static void startConfirmation() {
         while (true) {
-            System.out.println("Type 'start' to begin simulation, 'menu' to return to the main menu, or 'exit' to quit.");
-            System.out.print("Enter command: ");
+            System.out.println(" Type 'start' to begin simulation, 'menu' to return to the main menu, or 'exit' to quit.");
+            System.out.print(" Enter command: ");
 
             // Remove all leading and trailing spaces and converted to lowercase
-            String input = scanner.nextLine().trim().toLowerCase();
+//            String input = scanner.nextLine().trim().toLowerCase();
+            String input = "start"; //TODO: REMOVE THIS
+
+            List<String> selections = List.of("start", "menu", "exit");
+
+            if (!selections.contains(input)) {
+                System.out.println("----------------------------------------");
+                System.out.println(" Invalid command.");
+                System.out.println(" Please enter 'start', 'menu', or 'exit'.");
+                System.out.println("----------------------------------------\n");
+                continue;
+            }
 
             switch (input) {
 
@@ -163,23 +176,18 @@ public class Main {
                     TicketPool ticketPool = new TicketPool();
                     SimulationManager simulationManager = new SimulationManager(ticketPool);
                     simulationManager.startSimulation();
-                    return;
-
-                case "menu":
-                    Main.menu();
-                    return;
-
-                case "exit":
-                    System.out.println("Exiting system...");
-                    System.exit(0);
                     break;
 
-                default:
-                    System.out.println("----------------------------------------");
-                    System.out.println("Invalid command.");
-                    System.out.println("Please enter 'start', 'menu', or 'exit'.");
-                    System.out.println("----------------------------------------\n");
+                case "menu":
+                    menu();
+                    break;
+
+                case "exit":
+                    System.out.println(" Exiting system...");
+                    System.exit(0);
+                    break;
             }
+            return;
         }
     }
 

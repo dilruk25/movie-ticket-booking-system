@@ -5,24 +5,25 @@ import com.dilruk.movieticketbooking.model.consumer.Customer;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.model.producer.Vendor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimulationManager {
 
     // To stop the simulation process
     private static boolean isRunning = false;
     private final TicketPool ticketPool;
-    private final int customerRetrievalRate;
-    private final int totalTickets;
-    private final int ticketReleaseRate;
-    Thread vendorThread;
-    Thread customerThread;
+    private final int noOfVendors;
+    private final int noOfCustomers;
+    private final List<Thread> vendorList = new ArrayList<>();
+    private final List<Thread> customerList = new ArrayList<>();
 
     public SimulationManager(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
         this.ticketPool.setSimulationManager(this); // To use the very simulationManager object in ticketPool
 
-        this.customerRetrievalRate = SystemConfig.getCustomerRetrievalRate();
-        this.totalTickets = SystemConfig.getTotalTickets();
-        this.ticketReleaseRate = SystemConfig.getTicketReleaseRate();
+        this.noOfVendors = SystemConfig.getNoOfVendors();
+        this.noOfCustomers = SystemConfig.getNoOfCustomers();
     }
 
     /**
@@ -46,39 +47,58 @@ public class SimulationManager {
             System.out.println("----------------------------------------\n");
             return;
         }
+
         System.out.println("\n----------------------------------------");
         System.out.println(" Configuring the system...");
-        System.out.println(" Starting the simulation...");
-
-        vendorThread = new Thread(new Vendor(ticketPool, totalTickets, ticketReleaseRate));
-        customerThread = new Thread(new Customer(ticketPool, customerRetrievalRate));
-
-        vendorThread.start();
-        customerThread.start();
 
         SimulationManager.setIsRunning(true);
-        System.out.println("Successfully Started the simulation...");
-        System.out.println("----------------------------------------");
+
+        System.out.println(" Starting the simulation...");
+        System.out.println(" Creating vendor threads...");
+        System.out.println(" Creating customer threads...");
+        System.out.println("----------------------------------------\n");
+
+        for (int i = 1; i <= noOfVendors; i++) {
+            Thread vendorThread = new Thread(new Vendor(ticketPool), "Vendor " + i);
+            vendorThread.start();
+            vendorList.add(vendorThread);
+        }
+
+        for (int i = 1; i <= noOfCustomers; i++) {
+            Thread customerThread = new Thread(new Customer(ticketPool), "Customer " + i);
+            customerThread.start();
+            customerList.add(customerThread);
+        }
     }
 
     public void stopSimulation() {
         System.out.println("\n----------------------------------------");
         System.out.println("Stopping the simulation...");
 
-        if (vendorThread != null) {
-            vendorThread.interrupt();
-        }
-        if (customerThread != null) {
-            customerThread.interrupt();
-        }
-
-        // Wait for threads to finish
-        try {
-            if (vendorThread != null) {
-                vendorThread.join();
+            if (!vendorList.isEmpty()) {
+                for (Thread thread : vendorList) {
+                    thread.interrupt();
+                }
             }
-            if (customerThread != null) {
-                customerThread.join();
+
+            if (!customerList.isEmpty()) {
+                for (Thread thread : customerList) {
+                    thread.interrupt();
+                }
+            }
+
+        try {
+
+            if (!vendorList.isEmpty()) {
+                for (Thread thread : vendorList) {
+                    thread.join();
+                }
+            }
+
+            if (!customerList.isEmpty()) {
+                for (Thread thread : customerList) {
+                    thread.join();
+                }
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
