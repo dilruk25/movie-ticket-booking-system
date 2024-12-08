@@ -21,7 +21,6 @@ public class Event {
     private Long id;
 
     private String eventId;
-    private String title; //movie name
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
