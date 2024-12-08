@@ -1,0 +1,289 @@
+
+=== Configuration Summary ===
+
+=============================
+ Total tickets: 1000
+ Ticket release rate: 1
+ Customer retrieval rate: 1
+ Maximum ticket capacity: 1
+ Number of vendors: 1
+ Number of customers: 1
+=============================
+
+----------------------------------------
+ Total tickets created: 1
+ [Vendor 1] added: Ticket{ticketId='af22fda2-d3de-4cfc-88b5-a87119c65b47', movieTitle='Test Movie', date=2024-12-09, time=05:07:41.577421800, price=1895}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='af22fda2-d3de-4cfc-88b5-a87119c65b47', movieTitle='Test Movie', date=2024-12-09, time=05:07:41.577421800, price=1895}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 2
+ [Vendor 1] added: Ticket{ticketId='5883d8aa-5138-442f-9c72-32913d51d56f', movieTitle='Test Movie', date=2024-12-09, time=05:07:42.586267900, price=2516}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='5883d8aa-5138-442f-9c72-32913d51d56f', movieTitle='Test Movie', date=2024-12-09, time=05:07:42.586267900, price=2516}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 3
+ [Vendor 1] added: Ticket{ticketId='901592ba-cec8-4c4e-86e4-c90ba2ac1d0f', movieTitle='Test Movie', date=2024-12-09, time=05:07:43.592921600, price=1850}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Maximum ticket capacity has reached: 1
+ Waiting for a ticket purchase...
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='901592ba-cec8-4c4e-86e4-c90ba2ac1d0f', movieTitle='Test Movie', date=2024-12-09, time=05:07:43.592921600, price=1850}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 4
+ [Vendor 1] added: Ticket{ticketId='ad5e0fab-157d-4b68-95e6-f3e312319b55', movieTitle='Test Movie', date=2024-12-09, time=05:07:44.608458, price=1916}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Maximum ticket capacity has reached: 1
+ Waiting for a ticket purchase...
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='ad5e0fab-157d-4b68-95e6-f3e312319b55', movieTitle='Test Movie', date=2024-12-09, time=05:07:44.608458, price=1916}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 5
+ [Vendor 1] added: Ticket{ticketId='b749e64b-f0bc-4411-8677-e9f586126f00', movieTitle='Test Movie', date=2024-12-09, time=05:07:45.612979300, price=3788}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Maximum ticket capacity has reached: 1
+ Waiting for a ticket purchase...
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='b749e64b-f0bc-4411-8677-e9f586126f00', movieTitle='Test Movie', date=2024-12-09, time=05:07:45.612979300, price=3788}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 6
+ [Vendor 1] added: Ticket{ticketId='ee94a145-9254-48f7-969a-b0e1d4cc7055', movieTitle='Test Movie', date=2024-12-09, time=05:07:46.626647300, price=1046}
+ Available tickets: 1
+----------------------------------------
+
+Customer threads have been manually interrupted.
+
+Vendor threads have been manually interrupted.
+
+=== Configuration Summary ===
+
+=============================
+ Total tickets: 1000
+ Ticket release rate: 2
+ Customer retrieval rate: 13
+ Maximum ticket capacity: 30
+ Number of vendors: 5
+ Number of customers: 10
+=============================
+
+----------------------------------------
+ Total tickets created: 7
+ [Vendor 1] added: Ticket{ticketId='6f0e166d-a166-437f-9e15-47b38581752a', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.621990200, price=2466}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 8
+ [Vendor 4] added: Ticket{ticketId='3db69ea1-9be2-4fa6-b266-ab1eec95e93e', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.622978, price=3170}
+ Available tickets: 2
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='6f0e166d-a166-437f-9e15-47b38581752a', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.621990200, price=2466}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 4] bought: Ticket{ticketId='3db69ea1-9be2-4fa6-b266-ab1eec95e93e', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.622978, price=3170}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 9
+ [Vendor 2] added: Ticket{ticketId='1ea8a4d2-54ed-4148-9fc9-5a948f689ac9', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.622978, price=2562}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 3] bought: Ticket{ticketId='1ea8a4d2-54ed-4148-9fc9-5a948f689ac9', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.622978, price=2562}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 10
+ [Vendor 3] added: Ticket{ticketId='e3676e3b-988f-4e37-98f5-bd60571e6105', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.623978, price=4010}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 11
+ [Vendor 5] added: Ticket{ticketId='59130510-9f15-466e-ae72-b90c3b01e4ab', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.623978, price=3440}
+ Available tickets: 2
+----------------------------------------
+
+----------------------------------------
+ [Customer 3] bought: Ticket{ticketId='e3676e3b-988f-4e37-98f5-bd60571e6105', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.623978, price=4010}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 8] bought: Ticket{ticketId='59130510-9f15-466e-ae72-b90c3b01e4ab', movieTitle='Test Movie', date=2024-12-09, time=05:09:36.623978, price=3440}
+ Available tickets: 0
+----------------------------------------
+
+
+----------------------------------------
+ No Tickets available. Waiting ...
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 12
+ [Vendor 1] added: Ticket{ticketId='e2617afd-2011-4304-9374-80bbe41d277d', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.122936100, price=4410}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 4] bought: Ticket{ticketId='e2617afd-2011-4304-9374-80bbe41d277d', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.122936100, price=4410}
+ Available tickets: 0
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 13
+ [Vendor 4] added: Ticket{ticketId='7a1dfc7e-447c-4cf6-b7d0-a76190f9ce64', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.123599700, price=4399}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 14
+ [Vendor 5] added: Ticket{ticketId='2fbe7d64-680b-443a-885e-5aa6bb9625ca', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.124886600, price=1335}
+ Available tickets: 2
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 15
+ [Vendor 2] added: Ticket{ticketId='73999e4f-9d2f-4b57-a398-80b5e4f82576', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.124886600, price=2816}
+ Available tickets: 3
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 16
+ [Vendor 3] added: Ticket{ticketId='6bd49bcf-c772-4be9-97bf-8c459324bd41', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.125628, price=1575}
+ Available tickets: 4
+----------------------------------------
+
+----------------------------------------
+ [Customer 9] bought: Ticket{ticketId='7a1dfc7e-447c-4cf6-b7d0-a76190f9ce64', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.123599700, price=4399}
+ Available tickets: 3
+----------------------------------------
+
+----------------------------------------
+ [Customer 3] bought: Ticket{ticketId='2fbe7d64-680b-443a-885e-5aa6bb9625ca', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.124886600, price=1335}
+ Available tickets: 2
+----------------------------------------
+
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='73999e4f-9d2f-4b57-a398-80b5e4f82576', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.124886600, price=2816}
+ Available tickets: 1
+----------------------------------------
+
+----------------------------------------
+ [Customer 5] bought: Ticket{ticketId='6bd49bcf-c772-4be9-97bf-8c459324bd41', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.125628, price=1575}
+ Available tickets: 0
+----------------------------------------
+
+
+----------------------------------------
+ No Tickets available. Waiting ...
+----------------------------------------
+
+
+----------------------------------------
+ No Tickets available. Waiting ...
+----------------------------------------
+
+
+----------------------------------------
+ No Tickets available. Waiting ...
+----------------------------------------
+
+
+----------------------------------------
+ No Tickets available. Waiting ...
+----------------------------------------
+
+----------------------------------------
+ Total tickets created: 17
+ [Vendor 4] added: Ticket{ticketId='6e09236c-2f4c-41ce-bc89-a483d14d315c', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.623957300, price=4413}
+ Available tickets: 1
+----------------------------------------
+
+
+Vendor threads have been manually interrupted.
+----------------------------------------
+ [Customer 1] bought: Ticket{ticketId='6e09236c-2f4c-41ce-bc89-a483d14d315c', movieTitle='Test Movie', date=2024-12-09, time=05:09:37.623957300, price=4413}
+ Available tickets: 0
+----------------------------------------
+
+Customer threads have been manually interrupted.
+Customer threads have been manually interrupted.
+Customer threads have been manually interrupted.
+Customer threads have been manually interrupted.
+Customer threads have been manually interrupted.
+Customer threads have been manually interrupted.
+----------------------------------------
+ Total tickets created: 18
+ [Vendor 5] added: Ticket{ticketId='bf19799a-3316-499a-86f1-1c9710b6ddb3', movieTitle='Test Movie', date=2024-12-09, time=05:09:38.856482900, price=2681}
+ Available tickets: 1
+----------------------------------------
+
+
+Vendor threads have been manually interrupted.
+----------------------------------------
+ Total tickets created: 19
+ [Vendor 2] added: Ticket{ticketId='93e7caae-7bed-4a7d-a01d-b3dd3996467f', movieTitle='Test Movie', date=2024-12-09, time=05:09:38.856482900, price=4104}
+ Available tickets: 2
+----------------------------------------
+
+
+Vendor threads have been manually interrupted.
+----------------------------------------
+ Total tickets created: 20
+ [Vendor 3] added: Ticket{ticketId='6aff69a8-39f0-4084-a2a9-2f95dc27de00', movieTitle='Test Movie', date=2024-12-09, time=05:09:38.856482900, price=3213}
+ Available tickets: 3
+----------------------------------------
+
+
+Vendor threads have been manually interrupted.
+----------------------------------------
+ Total tickets created: 21
+ [Vendor 1] added: Ticket{ticketId='56311c3e-3169-4c05-99d3-9a80ba9c87ab', movieTitle='Test Movie', date=2024-12-09, time=05:09:38.856482900, price=1362}
+ Available tickets: 4
+----------------------------------------
+
+
+Vendor threads have been manually interrupted.
