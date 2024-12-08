@@ -1,6 +1,7 @@
 package com.dilruk.movieticketbooking.config;
 
 import com.dilruk.movieticketbooking.util.ConsoleUtil;
+import com.dilruk.movieticketbooking.util.LogUtil;
 
 import java.util.Scanner;
 
@@ -62,8 +63,6 @@ public class SystemConfig {
 
         SystemConfig.noOfCustomers = ConsoleUtil.promptForPositiveInteger(scanner, "Set number of customers: ");
 
-        SystemConfig.displaySummary();
-
 //        SystemConfig.totalTickets = 100; //TODO: REMOVE THIS
 //        SystemConfig.ticketReleaseRate = 10;
 //        SystemConfig.customerRetrievalRate = 9;
@@ -71,20 +70,21 @@ public class SystemConfig {
 //        SystemConfig.noOfVendors = 5;
 //        SystemConfig.noOfCustomers = 10;
 
+        SystemConfig.displaySummary();
     }
 
     /**
      * Displays a summary of the current configuration.
      */
     private static void displaySummary() {
-        System.out.println("\n=== Configuration Summary ===\n");
-        System.out.println("=============================");
-        System.out.println(" Total tickets: " + totalTickets);
-        System.out.println(" Ticket release rate: " + ticketReleaseRate);
-        System.out.println(" Customer retrieval rate: " + customerRetrievalRate);
-        System.out.println(" Maximum ticket capacity: " + maxTicketCapacity);
-        System.out.println(" Number of vendors: " + noOfVendors);
-        System.out.println(" Number of customers: " + noOfCustomers);
-        System.out.println("=============================\n");
+        LogUtil.printLogLn("\n=== Configuration Summary ===\n");
+        LogUtil.printLogLn("=============================");
+        LogUtil.printLogLn(" Total tickets: " + totalTickets);
+        LogUtil.printLogLn(" Ticket release rate: " + ticketReleaseRate);
+        LogUtil.printLogLn(" Customer retrieval rate: " + customerRetrievalRate);
+        LogUtil.printLogLn(" Maximum ticket capacity: " + maxTicketCapacity);
+        LogUtil.printLogLn(" Number of vendors: " + noOfVendors);
+        LogUtil.printLogLn(" Number of customers: " + noOfCustomers);
+        LogUtil.printLogLn("=============================\n");
     }
 }

@@ -1,32 +1,21 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.exception.FileWritingException;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Logger;
+
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
-        PrintStream printStream = redirectOutputToFile();
         welcome();
         login();
         menu();
-
-        System.setOut(printStream);
-        scanner.close();
     }
 
     /**
@@ -99,17 +88,8 @@ public class Main {
             System.out.println(" [5] Configure web application settings");
             System.out.print(" [0] Exit\n> ");
 
-            List<String> menuSelections = List.of("1", "2", "3", "4", "5", "0");
-
             String option = scanner.nextLine().trim();
 //            String option = "1"; //TODO: REMOVE THIS
-
-            if (!menuSelections.contains(option)) {
-                System.out.println("----------------------------------------");
-                System.out.println(" \"" + option + "\" is not a valid input");
-                System.out.println("----------------------------------------\n");
-                continue;
-            }
 
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
@@ -152,6 +132,11 @@ public class Main {
                     System.out.println("You have exit from the cli");
                     System.exit(0); // Exit the program with a normal status
                     break;
+                default:
+                    System.out.println("----------------------------------------");
+                    System.out.println(" \"" + option + "\" is not a valid input");
+                    System.out.println("----------------------------------------\n");
+                    continue;
             }
             return;
         }
@@ -169,16 +154,6 @@ public class Main {
             String input = scanner.nextLine().trim().toLowerCase();
 //            String input = "start"; //TODO: REMOVE THIS
 
-            List<String> selections = List.of("start", "menu", "exit");
-
-            if (!selections.contains(input)) {
-                System.out.println("----------------------------------------");
-                System.out.println(" Invalid command.");
-                System.out.println(" Please enter 'start', 'menu', or 'exit'.");
-                System.out.println("----------------------------------------\n");
-                continue;
-            }
-
             switch (input) {
 
                 case "start":
@@ -195,27 +170,14 @@ public class Main {
                     System.out.println(" Exiting system...");
                     System.exit(0);
                     break;
+                default:
+                    System.out.println("----------------------------------------");
+                    System.out.println(" Invalid command.");
+                    System.out.println(" Please enter 'start', 'menu', or 'exit'.");
+                    System.out.println("----------------------------------------\n");
+                    continue;
             }
             return;
-        }
-    }
-
-    public static PrintStream redirectOutputToFile() {
-        try {
-            String logFilePath = "logs.txt";
-            File logFile = new File(logFilePath);
-
-            if (logFile.exists() && !logFile.delete()) {
-                logger.warning("Existing file cannot be deleted: " + logFilePath);
-                logger.warning("Overwriting existing file: " + logFilePath);
-            } else {
-                logger.info("Created new file: " + logFilePath);
-            }
-
-            PrintStream printStream = new PrintStream(new FileOutputStream(logFile, false));
-            return printStream;
-        } catch (IOException e) {
-            throw new FileWritingException(e.getMessage());
         }
     }
 }

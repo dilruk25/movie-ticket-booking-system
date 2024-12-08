@@ -2,6 +2,7 @@ package com.dilruk.movieticketbooking.model.pool;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
+import com.dilruk.movieticketbooking.util.LogUtil;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.Queue;
@@ -43,43 +44,51 @@ public class TicketPool {
 
     public synchronized void addTicket() {
 
-        if (availableTicketList.size() >= maxTicketCapacity) {
-            System.out.println("----------------------------------------");
-            System.out.println(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
-            System.out.println(" Waiting for a ticket purchase...");
-            System.out.println("----------------------------------------\n");
+        while (availableTicketList.size() >= maxTicketCapacity) {
+            LogUtil.printLogLn("----------------------------------------");
+            LogUtil.printLogLn(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
+            LogUtil.printLogLn(" Waiting for a ticket purchase...");
+            LogUtil.printLogLn("----------------------------------------\n");
 
-            return;
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         Ticket ticket = new Ticket(); // Creates ticket assigning random values
 
-        System.out.println("----------------------------------------");
-        System.out.println(" Total tickets created: " + Ticket.getTicketCount().get());
+        LogUtil.printLogLn("----------------------------------------");
+        LogUtil.printLogLn(" Total tickets created: " + Ticket.getTicketCount().get());
 
         availableTicketList.add(ticket);
 
-        System.out.println(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
-        System.out.println(" Available tickets: " + availableTicketList.size());
-        System.out.println("----------------------------------------\n");
+        LogUtil.printLogLn(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
+        LogUtil.printLogLn(" Available tickets: " + availableTicketList.size());
+        LogUtil.printLogLn("----------------------------------------\n");
         notifyAll();
     }
 
-    public synchronized void buyTicket() throws InterruptedException {
-        if (availableTicketList.isEmpty()) {
-            System.out.println("\n----------------------------------------");
-            System.out.println(" No Tickets available. Waiting ...");
-            System.out.println("----------------------------------------\n");
+    public synchronized void buyTicket() {
+        while (availableTicketList.isEmpty()) {
+            LogUtil.printLogLn("\n----------------------------------------");
+            LogUtil.printLogLn(" No Tickets available. Waiting ...");
+            LogUtil.printLogLn("----------------------------------------\n");
 
-            wait(); // Wait until a ticket is added
+            try {
+                wait(); // Wait until a ticket is added
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         // To display the removed ticket from the list
         Ticket boughtTicket = availableTicketList.poll();
 
-        System.out.println("----------------------------------------");
-        System.out.println(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
-        System.out.println(" Available tickets: " + availableTicketList.size());
-        System.out.println("----------------------------------------\n");
+        LogUtil.printLogLn("----------------------------------------");
+        LogUtil.printLogLn(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
+        LogUtil.printLogLn(" Available tickets: " + availableTicketList.size());
+        LogUtil.printLogLn("----------------------------------------\n");
 
         notifyAll(); // Notify threads waiting to add tickets
     }
