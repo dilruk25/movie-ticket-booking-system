@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Vendor implements Runnable {
 
-    private static volatile AtomicBoolean isVendorFinished = new AtomicBoolean(false);
+    public static volatile AtomicBoolean isVendorFinished = new AtomicBoolean(false);
     private final TicketPool ticketPool;
     private final int totalTickets;
     private final int ticketReleaseRate;
@@ -27,24 +27,24 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        while (SimulationManager.getIsRunning() && !isVendorFinished.get()) {
+        while (!Thread.currentThread().isInterrupted() || isVendorFinished.get()) {
 
             try {
                 if (Ticket.getTicketCount().intValue() >= totalTickets) {
-                    LogUtil.printLogLn("----------------------------------------");
-                    LogUtil.printLogLn(" Total ticket limit reached: " + this.totalTickets);
-                    LogUtil.printLogLn(" Ticket adding cannot be proceed");
-                    LogUtil.printLogLn("----------------------------------------\n");
+                    LogUtil.log("----------------------------------------");
+                    LogUtil.log(" Total ticket limit reached: " + this.totalTickets);
+                    LogUtil.log(" Ticket adding cannot be proceed");
+                    LogUtil.log("----------------------------------------\n");
                     isVendorFinished.set(true);
-                    break;
+                    return;
                 }
 
                 ticketPool.addTicket();
                 Thread.sleep(1000 / ticketReleaseRate);
 
             } catch (InterruptedException e) {
-                LogUtil.printLogLn("\nVendor threads have been manually interrupted.");
                 Thread.currentThread().interrupt();
+                LogUtil.log("\nVendor threads have been manually interrupted.");
                 break;
             }
         }

@@ -7,11 +7,12 @@ import com.dilruk.movieticketbooking.model.producer.Vendor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SimulationManager {
 
     // To stop the simulation process
-    private static boolean isRunning = false;
+    private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private final TicketPool ticketPool;
     private final int noOfVendors;
     private final int noOfCustomers;
@@ -20,8 +21,6 @@ public class SimulationManager {
 
     public SimulationManager(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
-        this.ticketPool.setSimulationManager(this); // To use the very simulationManager object in ticketPool
-
         this.noOfVendors = SystemConfig.getNoOfVendors();
         this.noOfCustomers = SystemConfig.getNoOfCustomers();
     }
@@ -31,27 +30,23 @@ public class SimulationManager {
      *
      * @return true if the simulation is running, otherwise false.
      */
-    public static boolean getIsRunning() {
+    public static AtomicBoolean getIsRunning() {
         return SimulationManager.isRunning;
     }
 
-    // Setters
-    public static void setIsRunning(boolean isRunning) {
+    /**
+     * Set the current state of the simulation (running or stopped).
+     */
+    public static void setIsRunning(AtomicBoolean isRunning) {
         SimulationManager.isRunning = isRunning;
     }
 
-    public void startSimulation() {
-        if (isRunning) {
-            System.out.println("----------------------------------------");
-            System.out.println(" Simulation is already running.");
-            System.out.println("----------------------------------------\n");
-            return;
-        }
+    public void createSimulation() {
 
         System.out.println("\n----------------------------------------");
         System.out.println(" Configuring the system...");
 
-        SimulationManager.setIsRunning(true);
+        SimulationManager.setIsRunning(new AtomicBoolean(true));
 
         System.out.println(" Starting the simulation...");
         System.out.println(" Creating vendor threads...");
@@ -71,9 +66,8 @@ public class SimulationManager {
         }
     }
 
-    public void stopSimulation() {
-        System.out.println("\n----------------------------------------");
-        System.out.println("Stopping the simulation...");
+    public void interruptSimulation() {
+        isRunning.set(false);
 
             if (!vendorList.isEmpty()) {
                 for (Thread thread : vendorList) {
@@ -87,25 +81,22 @@ public class SimulationManager {
                 }
             }
 
-        try {
+            try {
 
-            if (!vendorList.isEmpty()) {
-                for (Thread thread : vendorList) {
-                    thread.join();
+                if (!vendorList.isEmpty()) {
+                    for (Thread thread : vendorList) {
+                        thread.join();
+                    }
                 }
-            }
 
-            if (!customerList.isEmpty()) {
-                for (Thread thread : customerList) {
-                    thread.join();
+                if (!customerList.isEmpty()) {
+                    for (Thread thread : customerList) {
+                        thread.join();
+                    }
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Stop Simulation has interrupted.");
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.out.println("Simulation stopping interrupted.");
-        }
-
-        System.out.println(" Simulation has stopped successfully.");
-        System.out.println("----------------------------------------\n");
     }
 }

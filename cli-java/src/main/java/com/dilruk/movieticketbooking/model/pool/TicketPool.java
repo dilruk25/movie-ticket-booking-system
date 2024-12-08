@@ -3,7 +3,6 @@ package com.dilruk.movieticketbooking.model.pool;
 import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
 import com.dilruk.movieticketbooking.util.LogUtil;
-import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -19,8 +18,7 @@ public class TicketPool {
     private final int maxTicketCapacity;
     // Available Tickets are stored in an array
     private final Queue<Ticket> availableTicketList;
-    // Use for assigning the exact SimulationManager object to TicketPool object
-    private SimulationManager simulationManager;
+
 
     public TicketPool() {
         ticketPoolCount.incrementAndGet();
@@ -38,17 +36,13 @@ public class TicketPool {
         return this.availableTicketList;
     }
 
-    public void setSimulationManager(SimulationManager simulationManager) {
-        this.simulationManager = simulationManager;
-    }
-
     public synchronized void addTicket() {
 
         while (availableTicketList.size() >= maxTicketCapacity) {
-            LogUtil.printLogLn("----------------------------------------");
-            LogUtil.printLogLn(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
-            LogUtil.printLogLn(" Waiting for a ticket purchase...");
-            LogUtil.printLogLn("----------------------------------------\n");
+            LogUtil.log("----------------------------------------");
+            LogUtil.log(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
+            LogUtil.log(" Waiting for a ticket purchase...");
+            LogUtil.log("----------------------------------------\n");
 
             try {
                 wait();
@@ -59,22 +53,22 @@ public class TicketPool {
 
         Ticket ticket = new Ticket(); // Creates ticket assigning random values
 
-        LogUtil.printLogLn("----------------------------------------");
-        LogUtil.printLogLn(" Total tickets created: " + Ticket.getTicketCount().get());
+        LogUtil.log("----------------------------------------");
+        LogUtil.log(" Total tickets created: " + Ticket.getTicketCount().get());
 
         availableTicketList.add(ticket);
 
-        LogUtil.printLogLn(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
-        LogUtil.printLogLn(" Available tickets: " + availableTicketList.size());
-        LogUtil.printLogLn("----------------------------------------\n");
+        LogUtil.log(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
+        LogUtil.log(" Available tickets: " + availableTicketList.size());
+        LogUtil.log("----------------------------------------\n");
         notifyAll();
     }
 
     public synchronized void buyTicket() {
         while (availableTicketList.isEmpty()) {
-            LogUtil.printLogLn("\n----------------------------------------");
-            LogUtil.printLogLn(" No Tickets available. Waiting ...");
-            LogUtil.printLogLn("----------------------------------------\n");
+            LogUtil.log("\n----------------------------------------");
+            LogUtil.log(" No Tickets available. Waiting ...");
+            LogUtil.log("----------------------------------------\n");
 
             try {
                 wait(); // Wait until a ticket is added
@@ -85,10 +79,10 @@ public class TicketPool {
         // To display the removed ticket from the list
         Ticket boughtTicket = availableTicketList.poll();
 
-        LogUtil.printLogLn("----------------------------------------");
-        LogUtil.printLogLn(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
-        LogUtil.printLogLn(" Available tickets: " + availableTicketList.size());
-        LogUtil.printLogLn("----------------------------------------\n");
+        LogUtil.log("----------------------------------------");
+        LogUtil.log(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
+        LogUtil.log(" Available tickets: " + availableTicketList.size());
+        LogUtil.log("----------------------------------------\n");
 
         notifyAll(); // Notify threads waiting to add tickets
     }

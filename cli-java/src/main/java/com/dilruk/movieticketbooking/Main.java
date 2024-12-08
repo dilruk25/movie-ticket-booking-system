@@ -1,16 +1,27 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
+import com.dilruk.movieticketbooking.exception.FileReadingException;
+import com.dilruk.movieticketbooking.model.consumer.Customer;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
+import com.dilruk.movieticketbooking.model.producer.Vendor;
+import com.dilruk.movieticketbooking.util.LogUtil;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static SimulationManager simulationManager = null;
+    private static Thread simulationThread = null;
 
     public static void main(String[] args) {
         welcome();
@@ -82,10 +93,8 @@ public class Main {
 
             System.out.println(" [1] Start simulation");
             System.out.println(" [2] Stop simulation");
-            System.out.println(" [3] Configure Simulation settings");
-            System.out.println(" [4] Real-Time Monitoring");
+            System.out.println(" [3] Real-Time Monitoring");
             System.out.println("----------------------------------------");
-            System.out.println(" [5] Configure web application settings");
             System.out.print(" [0] Exit\n> ");
 
             String option = scanner.nextLine().trim();
@@ -94,51 +103,23 @@ public class Main {
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
                 case "1":
-                    if (SimulationManager.getIsRunning()) {
-                        System.out.println("----------------------------------------");
-                        System.out.println(" Simulation is already running.");
-                        System.out.println("----------------------------------------\n");
-                    } else {
-                        SystemConfig.addSimulationConfig(); // Configure settings
-                        startConfirmation(); // Get confirmation to proceed simulation
-                    }
+                    startSimulation();
                     break;
-
                 case "2":
-                    if (!SimulationManager.getIsRunning()) {
-                        System.out.println("----------------------------------------");
-                        System.out.println(" Simulation is not running.");
-                        System.out.println("----------------------------------------");
-                    } else {
-                        System.out.println("----------------------------------------");
-                        System.out.println(" Stopping simulation...");
-                        System.out.println("----------------------------------------\n");
-
-                        // TODO: need to fix here
-                        // simulationManager.stopSimulation(); // Stop the simulation
-                    }
+                    stopSimulation();
                     break;
                 case "3":
-                    System.out.println("Simulation configuration settings has opened");
-                    break;
-                case "4":
-                    System.out.println("Simulation is being monitored");
-                    break;
-                case "5":
-                    System.out.println("Web Configuration has opened");
-                    SystemConfig.addSimulationConfig();
+                    monitorTickets();
                     break;
                 case "0":
-                    System.out.println("You have exit from the cli");
+                    System.out.println("Exiting the CLI");
                     System.exit(0); // Exit the program with a normal status
-                    break;
+                    return;
                 default:
                     System.out.println("----------------------------------------");
                     System.out.println(" \"" + option + "\" is not a valid input");
                     System.out.println("----------------------------------------\n");
-                    continue;
             }
-            return;
         }
     }
 
@@ -158,8 +139,8 @@ public class Main {
 
                 case "start":
                     TicketPool ticketPool = new TicketPool();
-                    SimulationManager simulationManager = new SimulationManager(ticketPool);
-                    simulationManager.startSimulation();
+                    simulationManager = new SimulationManager(ticketPool);
+                    simulationManager.createSimulation();
                     break;
 
                 case "menu":
@@ -178,6 +159,84 @@ public class Main {
                     continue;
             }
             return;
+        }
+    }
+
+    private static void startSimulation() {
+        if (SimulationManager.getIsRunning().get()) {
+            System.out.println("----------------------------------------");
+            System.out.println(" Simulation is already running.");
+            System.out.println("----------------------------------------\n");
+        } else {
+            SystemConfig.addSimulationConfig(); // Configure settings
+            startConfirmation(); // Get confirmation to proceed simulation
+        }
+    }
+
+    private static void stopSimulation() {
+        if (!SimulationManager.getIsRunning().get()) {
+            System.out.println("\n----------------------------------------");
+            System.out.println(" Simulation is not running.");
+            System.out.println("----------------------------------------");
+        }
+
+        if (Vendor.isVendorFinished.get()) {
+            System.out.println("\n----------------------------------------");
+            System.out.println(" Vendor threads has already stopped.");
+            System.out.println("----------------------------------------");
+        }
+
+        if (Customer.isCustomerFinished.get()) {
+            System.out.println("\n----------------------------------------");
+            System.out.println(" Customer threads has already stopped.");
+            System.out.println("----------------------------------------");
+        } else {
+            System.out.println("\n  ----------------------------------------");
+            System.out.println(" Stopping simulation...");
+
+            simulationManager.interruptSimulation();
+        }
+
+        System.out.println(" Simulation has stopped successfully.");
+        System.out.println("----------------------------------------\n");
+    }
+
+    private static void monitorTickets() {
+        final Logger logger = Logger.getLogger(LogUtil.class.getName());
+
+        BufferedReader bufferedReader = null;
+        int fileCheckCounter = 0;
+
+        File file = new File("logs.txt");
+
+        if (!file.exists()) {
+            logger.info("\"" + "logs.txt" + "\" not found. Run the simulator first.");
+            return;
+        }
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+            String line;
+
+            while (true) {
+                if (fileCheckCounter > 20) { // After fair 20 seconds, file reading is set to stopped predicting that the simulation has stopped.
+                    bufferedReader.close();
+                    return;
+                }
+
+                line = bufferedReader.readLine();
+                if (line != null) {
+                    System.out.println(line);
+                } else {
+                    fileCheckCounter++;
+                    Thread.sleep(1000);
+                }
+            }
+
+        } catch (IOException e) {
+            logger.warning("File can't be read.");
+        } catch (InterruptedException e) {
+            logger.warning("Finished reading file.");
         }
     }
 }

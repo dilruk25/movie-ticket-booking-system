@@ -77,14 +77,14 @@ public class SystemConfig {
      * Displays a summary of the current configuration.
      */
     private static void displaySummary() {
-        LogUtil.printLogLn("\n=== Configuration Summary ===\n");
-        LogUtil.printLogLn("=============================");
-        LogUtil.printLogLn(" Total tickets: " + totalTickets);
-        LogUtil.printLogLn(" Ticket release rate: " + ticketReleaseRate);
-        LogUtil.printLogLn(" Customer retrieval rate: " + customerRetrievalRate);
-        LogUtil.printLogLn(" Maximum ticket capacity: " + maxTicketCapacity);
-        LogUtil.printLogLn(" Number of vendors: " + noOfVendors);
-        LogUtil.printLogLn(" Number of customers: " + noOfCustomers);
-        LogUtil.printLogLn("=============================\n");
+        LogUtil.printlnAndLog("\n=== Configuration Summary ===\n");
+        LogUtil.printlnAndLog("=============================");
+        LogUtil.printlnAndLog(" Total tickets: " + totalTickets);
+        LogUtil.printlnAndLog(" Ticket release rate: " + ticketReleaseRate);
+        LogUtil.printlnAndLog(" Customer retrieval rate: " + customerRetrievalRate);
+        LogUtil.printlnAndLog(" Maximum ticket capacity: " + maxTicketCapacity);
+        LogUtil.printlnAndLog(" Number of vendors: " + noOfVendors);
+        LogUtil.printlnAndLog(" Number of customers: " + noOfCustomers);
+        LogUtil.printlnAndLog("=============================\n");
     }
 }
