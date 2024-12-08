@@ -44,9 +44,5 @@ public class Customer implements Runnable {
                 break;
             }
         }
-        System.out.println("\n----------------------------------------");
-        System.out.println(" Finished ticket purchases");
-        System.out.println(" " + Thread.currentThread().getName() + " thread has stopped.");
-        System.out.println("----------------------------------------\n");
     }
 }

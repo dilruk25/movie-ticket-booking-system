@@ -21,8 +21,6 @@ public class TicketPool {
     // Use for assigning the exact SimulationManager object to TicketPool object
     private SimulationManager simulationManager;
 
-    private 
-
     public TicketPool() {
         ticketPoolCount.incrementAndGet();
         this.totalTickets = SystemConfig.getTotalTickets();
@@ -45,7 +43,7 @@ public class TicketPool {
 
     public synchronized void addTicket() {
 
-        if (availableTicketList.size() > maxTicketCapacity) {
+        if (availableTicketList.size() >= maxTicketCapacity) {
             System.out.println("----------------------------------------");
             System.out.println(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
             System.out.println(" Waiting for a ticket purchase...");

@@ -1,22 +1,31 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
+import com.dilruk.movieticketbooking.exception.FileWritingException;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
+        PrintStream printStream = redirectOutputToFile();
         welcome();
         login();
         menu();
 
+        System.setOut(printStream);
         scanner.close();
     }
 
@@ -56,7 +65,7 @@ public class Main {
             if (Objects.equals(username, USERNAME) && Objects.equals(password, PASSWORD)) {
                 System.out.println("----------------------------------------");
                 System.out.println("            Login Successful!           ");
-                System.out.println("----------------------------------------\n");
+                System.out.println("----------------------------------------");
                 return;
 
             } else {
@@ -92,8 +101,8 @@ public class Main {
 
             List<String> menuSelections = List.of("1", "2", "3", "4", "5", "0");
 
-//            String option = scanner.nextLine().trim();
-            String option = "1"; //TODO: REMOVE THIS
+            String option = scanner.nextLine().trim();
+//            String option = "1"; //TODO: REMOVE THIS
 
             if (!menuSelections.contains(option)) {
                 System.out.println("----------------------------------------");
@@ -157,8 +166,8 @@ public class Main {
             System.out.print(" Enter command: ");
 
             // Remove all leading and trailing spaces and converted to lowercase
-//            String input = scanner.nextLine().trim().toLowerCase();
-            String input = "start"; //TODO: REMOVE THIS
+            String input = scanner.nextLine().trim().toLowerCase();
+//            String input = "start"; //TODO: REMOVE THIS
 
             List<String> selections = List.of("start", "menu", "exit");
 
@@ -191,5 +200,22 @@ public class Main {
         }
     }
 
+    public static PrintStream redirectOutputToFile() {
+        try {
+            String logFilePath = "logs.txt";
+            File logFile = new File(logFilePath);
 
+            if (logFile.exists() && !logFile.delete()) {
+                logger.warning("Existing file cannot be deleted: " + logFilePath);
+                logger.warning("Overwriting existing file: " + logFilePath);
+            } else {
+                logger.info("Created new file: " + logFilePath);
+            }
+
+            PrintStream printStream = new PrintStream(new FileOutputStream(logFile, false));
+            return printStream;
+        } catch (IOException e) {
+            throw new FileWritingException(e.getMessage());
+        }
+    }
 }

@@ -50,26 +50,26 @@ public class SystemConfig {
         System.out.println("              Configuration              ");
         System.out.println("=========================================\n");
 
-//        SystemConfig.totalTickets = ConsoleUtil.promptForPositiveInteger(scanner, "Set total amount of tickets: ");
-//
-//        SystemConfig.ticketReleaseRate = ConsoleUtil.promptForPositiveInteger(scanner, "Set ticket release rate (per second): ");
-//
-//        SystemConfig.customerRetrievalRate = ConsoleUtil.promptForPositiveInteger(scanner, "Set customer retrieval rate (per second): ");
-//
-//        SystemConfig.maxTicketCapacity = ConsoleUtil.promptForPositiveInteger(scanner, "Set maximum ticket capacity: ");
-//
-//        SystemConfig.noOfVendors = ConsoleUtil.promptForPositiveInteger(scanner, "Set number of vendors: ");
-//
-//        SystemConfig.noOfCustomers = ConsoleUtil.promptForPositiveInteger(scanner, "Set number of customers: ");
-//
-//        SystemConfig.displaySummary();
+        SystemConfig.totalTickets = ConsoleUtil.promptForPositiveInteger(scanner, "Set total amount of tickets: ");
 
-        SystemConfig.totalTickets = 100; //TODO: REMOVE THIS
-        SystemConfig.ticketReleaseRate = 10;
-        SystemConfig.customerRetrievalRate = 9;
-        SystemConfig.maxTicketCapacity = 30;
-        SystemConfig.noOfVendors = 5;
-        SystemConfig.noOfCustomers = 10;
+        SystemConfig.ticketReleaseRate = ConsoleUtil.promptForPositiveInteger(scanner, "Set ticket release rate (per second): ");
+
+        SystemConfig.customerRetrievalRate = ConsoleUtil.promptForPositiveInteger(scanner, "Set customer retrieval rate (per second): ");
+
+        SystemConfig.maxTicketCapacity = ConsoleUtil.promptForPositiveInteger(scanner, "Set maximum ticket capacity: ");
+
+        SystemConfig.noOfVendors = ConsoleUtil.promptForPositiveInteger(scanner, "Set number of vendors: ");
+
+        SystemConfig.noOfCustomers = ConsoleUtil.promptForPositiveInteger(scanner, "Set number of customers: ");
+
+        SystemConfig.displaySummary();
+
+//        SystemConfig.totalTickets = 100; //TODO: REMOVE THIS
+//        SystemConfig.ticketReleaseRate = 10;
+//        SystemConfig.customerRetrievalRate = 9;
+//        SystemConfig.maxTicketCapacity = 30;
+//        SystemConfig.noOfVendors = 5;
+//        SystemConfig.noOfCustomers = 10;
 
     }
 

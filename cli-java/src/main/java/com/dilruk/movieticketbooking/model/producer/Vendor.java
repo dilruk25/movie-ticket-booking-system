@@ -47,9 +47,5 @@ public class Vendor implements Runnable {
                 break;
             }
         }
-        System.out.println("----------------------------------------");
-        System.out.println(" Finished adding tickets");
-        System.out.println(" " + Thread.currentThread().getName() + " thread has stopped.");
-        System.out.println("----------------------------------------\n");
     }
 }
