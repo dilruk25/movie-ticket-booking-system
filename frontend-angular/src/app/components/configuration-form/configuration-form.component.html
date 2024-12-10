@@ -1,0 +1,14 @@
+<div class="form-container">
+    <form #configForm="ngForm" (ngSubmit)="submitForm(configForm)">
+      <label for="maxTickets">Max Tickets:</label>
+      <input type="number" id="maxTickets" name="maxTickets" [(ngModel)]="config.maxTickets" required />
+  
+      <label for="seatLabels">Seat Labels:</label>
+      <input type="text" id="seatLabels" name="seatLabels" [(ngModel)]="config.seatLabels" required />
+  
+      <label for="vipSeats">VIP Seats:</label>
+      <input type="number" id="vipSeats" name="vipSeats" [(ngModel)]="config.vipSeats" required />
+  
+      <button type="submit">Save Configuration</button>
+    </form>
+  </div>  
