@@ -8,7 +8,7 @@ public class ConsoleUtil {
      * Prompts the user for a positive integer value.
      *
      * @param scanner Input scanner.
-     * @param label   Label to display message that describe the input.
+     * @param label Label to display message that describe the input.
      * @return A valid positive integer entered by the user.
      */
     public static int promptForPositiveInteger(Scanner scanner, String label) {

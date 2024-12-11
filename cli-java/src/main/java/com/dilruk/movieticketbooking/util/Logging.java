@@ -9,10 +9,11 @@ import java.io.PrintStream;
 import java.util.logging.Logger;
 
 
-public class LogUtil {
+public class Logging {
 
+    private static final Logger logger = Logger.getLogger(Logging.class.getName());
     private static PrintStream printStream;
-    private static final Logger logger = Logger.getLogger(LogUtil.class.getName());
+
     // Use static block for one time initialization
     static {
         try {

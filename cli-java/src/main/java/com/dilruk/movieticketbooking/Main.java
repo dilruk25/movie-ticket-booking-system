@@ -1,11 +1,10 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.exception.FileReadingException;
 import com.dilruk.movieticketbooking.model.consumer.Customer;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.model.producer.Vendor;
-import com.dilruk.movieticketbooking.util.LogUtil;
+import com.dilruk.movieticketbooking.util.Logging;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.io.BufferedReader;
@@ -21,7 +20,6 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static SimulationManager simulationManager = null;
-    private static Thread simulationThread = null;
 
     public static void main(String[] args) {
         welcome();
@@ -175,9 +173,10 @@ public class Main {
 
     private static void stopSimulation() {
         if (!SimulationManager.getIsRunning().get()) {
-            System.out.println("\n----------------------------------------");
-            System.out.println(" Simulation is not running.");
             System.out.println("----------------------------------------");
+            System.out.println(" Simulation is not running.");
+            System.out.println("----------------------------------------\n");
+            return;
         }
 
         if (Vendor.isVendorFinished.get()) {
@@ -202,7 +201,7 @@ public class Main {
     }
 
     private static void monitorTickets() {
-        final Logger logger = Logger.getLogger(LogUtil.class.getName());
+        final Logger logger = Logger.getLogger(Logging.class.getName());
 
         BufferedReader bufferedReader = null;
         int fileCheckCounter = 0;

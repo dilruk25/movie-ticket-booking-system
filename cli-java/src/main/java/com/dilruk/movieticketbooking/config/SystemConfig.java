@@ -1,7 +1,7 @@
 package com.dilruk.movieticketbooking.config;
 
 import com.dilruk.movieticketbooking.util.ConsoleUtil;
-import com.dilruk.movieticketbooking.util.LogUtil;
+import com.dilruk.movieticketbooking.util.Logging;
 
 import java.util.Scanner;
 
@@ -77,14 +77,14 @@ public class SystemConfig {
      * Displays a summary of the current configuration.
      */
     private static void displaySummary() {
-        LogUtil.printlnAndLog("\n=== Configuration Summary ===\n");
-        LogUtil.printlnAndLog("=============================");
-        LogUtil.printlnAndLog(" Total tickets: " + totalTickets);
-        LogUtil.printlnAndLog(" Ticket release rate: " + ticketReleaseRate);
-        LogUtil.printlnAndLog(" Customer retrieval rate: " + customerRetrievalRate);
-        LogUtil.printlnAndLog(" Maximum ticket capacity: " + maxTicketCapacity);
-        LogUtil.printlnAndLog(" Number of vendors: " + noOfVendors);
-        LogUtil.printlnAndLog(" Number of customers: " + noOfCustomers);
-        LogUtil.printlnAndLog("=============================\n");
+        Logging.printlnAndLog("\n=== Configuration Summary ===\n");
+        Logging.printlnAndLog("=============================");
+        Logging.printlnAndLog(" Total tickets: " + totalTickets);
+        Logging.printlnAndLog(" Ticket release rate: " + ticketReleaseRate);
+        Logging.printlnAndLog(" Customer retrieval rate: " + customerRetrievalRate);
+        Logging.printlnAndLog(" Maximum ticket capacity: " + maxTicketCapacity);
+        Logging.printlnAndLog(" Number of vendors: " + noOfVendors);
+        Logging.printlnAndLog(" Number of customers: " + noOfCustomers);
+        Logging.printlnAndLog("=============================\n");
     }
 }

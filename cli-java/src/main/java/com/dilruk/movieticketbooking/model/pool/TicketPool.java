@@ -2,7 +2,7 @@ package com.dilruk.movieticketbooking.model.pool;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
-import com.dilruk.movieticketbooking.util.LogUtil;
+import com.dilruk.movieticketbooking.util.Logging;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -39,10 +39,10 @@ public class TicketPool {
     public synchronized void addTicket() {
 
         while (availableTicketList.size() >= maxTicketCapacity) {
-            LogUtil.log("----------------------------------------");
-            LogUtil.log(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
-            LogUtil.log(" Waiting for a ticket purchase...");
-            LogUtil.log("----------------------------------------\n");
+            Logging.log("----------------------------------------");
+            Logging.log(" Maximum ticket capacity has reached: " + this.maxTicketCapacity);
+            Logging.log(" Waiting for a ticket purchase...");
+            Logging.log("----------------------------------------\n");
 
             try {
                 wait();
@@ -53,22 +53,22 @@ public class TicketPool {
 
         Ticket ticket = new Ticket(); // Creates ticket assigning random values
 
-        LogUtil.log("----------------------------------------");
-        LogUtil.log(" Total tickets created: " + Ticket.getTicketCount().get());
+        Logging.log("----------------------------------------");
+        Logging.log(" Total tickets created: " + Ticket.getTicketCount().get());
 
         availableTicketList.add(ticket);
 
-        LogUtil.log(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
-        LogUtil.log(" Available tickets: " + availableTicketList.size());
-        LogUtil.log("----------------------------------------\n");
+        Logging.log(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
+        Logging.log(" Available tickets: " + availableTicketList.size());
+        Logging.log("----------------------------------------\n");
         notifyAll();
     }
 
     public synchronized void buyTicket() {
         while (availableTicketList.isEmpty()) {
-            LogUtil.log("\n----------------------------------------");
-            LogUtil.log(" No Tickets available. Waiting ...");
-            LogUtil.log("----------------------------------------\n");
+            Logging.log("\n----------------------------------------");
+            Logging.log(" No Tickets available. Waiting ...");
+            Logging.log("----------------------------------------\n");
 
             try {
                 wait(); // Wait until a ticket is added
@@ -79,10 +79,10 @@ public class TicketPool {
         // To display the removed ticket from the list
         Ticket boughtTicket = availableTicketList.poll();
 
-        LogUtil.log("----------------------------------------");
-        LogUtil.log(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
-        LogUtil.log(" Available tickets: " + availableTicketList.size());
-        LogUtil.log("----------------------------------------\n");
+        Logging.log("----------------------------------------");
+        Logging.log(" [" + Thread.currentThread().getName() + "]" + " bought: " + boughtTicket);
+        Logging.log(" Available tickets: " + availableTicketList.size());
+        Logging.log("----------------------------------------\n");
 
         notifyAll(); // Notify threads waiting to add tickets
     }
