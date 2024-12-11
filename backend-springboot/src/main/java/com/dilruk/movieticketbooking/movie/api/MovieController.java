@@ -39,14 +39,14 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<List<MovieDTO>> getAllMovies() {
-        List<MovieDTO> movies = movieService.getAllMovies();
+        List<MovieDTO> movies = movieService.findAllMovies();
         return ResponseEntity.ok(movies);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<MovieDTO> getMovie(@PathVariable String id) {
         try {
-            MovieDTO movie = movieService.getMovieById(id);
+            MovieDTO movie = movieService.findMovieById(id);
             return ResponseEntity.ok(movie);
 
         } catch (UserNotFoundException e) {

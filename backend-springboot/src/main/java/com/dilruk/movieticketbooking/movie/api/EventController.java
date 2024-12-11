@@ -39,14 +39,14 @@ public class EventController {
 
     @GetMapping
     public ResponseEntity<List<EventDTO>> getAllEvents() {
-        List<EventDTO> events = eventService.getAllEvents();
+        List<EventDTO> events = eventService.findAllEvents();
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<EventDTO> getEvent(@PathVariable String id) {
         try {
-            EventDTO event = eventService.getEventById(id);
+            EventDTO event = eventService.findEventById(id);
             return ResponseEntity.ok(event);
 
         } catch (UserNotFoundException e) {

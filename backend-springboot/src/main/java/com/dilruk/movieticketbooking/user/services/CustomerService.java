@@ -1,7 +1,5 @@
 package com.dilruk.movieticketbooking.user.services;
 
-import com.dilruk.movieticketbooking.user.dtos.CustomerDTO;
-
 import java.util.List;
 
 public interface CustomerService {

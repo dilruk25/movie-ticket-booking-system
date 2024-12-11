@@ -7,7 +7,8 @@ public enum IdPrefix {
     TICKET_PREFIX("TCT"),
     EVENT_PREFIX("TCE"),
     CUSTOMER_PREFIX("TCC"),
-    VENDOR_PREFIX("TCV");
+    VENDOR_PREFIX("TCV"),
+    ADMIN_PREFIX("TCA");
 
     private final String prefix;
 

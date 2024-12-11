@@ -8,9 +8,9 @@ public interface EventService {
 
     EventDTO createEvent(EventDTO eventDTO);
 
-    List<EventDTO> getAllEvents();
+    List<EventDTO> findAllEvents();
 
-    EventDTO getEventById(String eventId);
+    EventDTO findEventById(String eventId);
 
     EventDTO updateEvent(String eventId, EventDTO eventDTO);
 

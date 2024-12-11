@@ -8,9 +8,9 @@ public interface MovieService {
 
     MovieDTO createMovie(MovieDTO movieDTO);
 
-    List<MovieDTO> getAllMovies();
+    List<MovieDTO> findAllMovies();
 
-    MovieDTO getMovieById(String movieId);
+    MovieDTO findMovieById(String movieId);
 
     MovieDTO updateMovie(String movieId, MovieDTO movieDTO);
 

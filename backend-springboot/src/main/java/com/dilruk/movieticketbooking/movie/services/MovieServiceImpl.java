@@ -36,13 +36,13 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> getAllMovies() {
+    public List<MovieDTO> findAllMovies() {
         List<Movie> movies = movieRepository.findAll();
         return movies.stream().map(movieMapper::fromEntityToDto).toList();
     }
 
     @Override
-    public MovieDTO getMovieById(String movieId) {
+    public MovieDTO findMovieById(String movieId) {
         Movie existMovie = movieRepository.findMovieByMovieId(movieId)
                 .orElseThrow(() -> new UserNotFoundException("Movie not found with the id: " + movieId));
 

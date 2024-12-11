@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Multiplex { // The cinema building that has more theatres
+public class Multiplex { // Multiplex is the cinema building that has more theatres
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

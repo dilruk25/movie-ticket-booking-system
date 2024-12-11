@@ -36,13 +36,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> getAllEvents() {
+    public List<EventDTO> findAllEvents() {
         List<Event> events = eventRepository.findAll();
         return events.stream().map(eventMapper::fromEntityToDto).toList();
     }
 
     @Override
-    public EventDTO getEventById(String eventId) {
+    public EventDTO findEventById(String eventId) {
         Event existEvent = eventRepository.findEventByEventId(eventId)
                 .orElseThrow(() -> new UserNotFoundException("Event not found with the id: " + eventId));
 
@@ -54,7 +54,6 @@ public class EventServiceImpl implements EventService {
         Event existingEvent = eventRepository.findEventByEventId(eventId)
                 .orElseThrow(() -> new UserNotFoundException("Event not found with the id: " + eventId));
 
-        existingEvent.setTitle(eventDTO.getTitle());
         existingEvent.setStartTime(eventDTO.getStartTime());
         existingEvent.setDate(eventDTO.getDate());
         existingEvent.setEndTime(eventDTO.getEndTime());
