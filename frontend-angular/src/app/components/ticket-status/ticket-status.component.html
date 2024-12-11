@@ -1,0 +1,8 @@
+<div class="ticket-status">
+    <h3>Ticket Status</h3>
+    <ul>
+      <li *ngFor="let ticket of tickets">
+        Seat: {{ ticket.seatLabel }} - Status: {{ ticket.status }}
+      </li>
+    </ul>
+  </div>  
