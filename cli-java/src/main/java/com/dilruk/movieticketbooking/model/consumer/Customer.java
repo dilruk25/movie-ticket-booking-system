@@ -23,7 +23,7 @@ public class Customer implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() || isCustomerFinished.get()) {
+        while (!Thread.currentThread().isInterrupted() && !isCustomerFinished.get()) {
             try {
 
                 if (Vendor.getIsVendorFinished().get() && ticketPool.getAvailableTicketList().isEmpty() && SystemConfig.getTotalTickets() == Ticket.getTicketCount().get()) {

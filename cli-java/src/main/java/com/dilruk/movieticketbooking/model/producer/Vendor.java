@@ -26,7 +26,7 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() || isVendorFinished.get()) {
+        while (!Thread.currentThread().isInterrupted() && !isVendorFinished.get()) {
 
             try {
                 if (Ticket.getTicketCount().intValue() >= totalTickets) {
