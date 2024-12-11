@@ -2,7 +2,7 @@ package com.dilruk.movieticketbooking.api;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
+import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
 import com.dilruk.movieticketbooking.services.user.CustomerService;
@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerService userService;
+    private final CustomerService customerService;
     private final UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest user) {
+    public ResponseEntity<UserDTO> createCustomer(@RequestBody UserRequest user) {
         try {
-            UserDTO savedUser = userService.createUser(userMapper.fromRequestToDto(user));
-            return ResponseEntity.ok(savedUser);
-        } catch (DuplicateDataException e) {
+            UserDTO savedCustomer = customerService.createUser(userMapper.fromRequestToDto(user));
+            return ResponseEntity.ok(savedCustomer);
+        } catch (UserAlreadyExistsException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -34,10 +34,22 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateCustomer(@PathVariable String id, @RequestBody UserRequest customer) {
+    @GetMapping("/{customerId}")
+    public ResponseEntity<UserDTO> getCustomerById(@PathVariable String customerId) {
         try {
-            UserDTO updatedCustomer = userService.updateUser(id, userMapper.fromRequestToDto(customer));
+            UserDTO user = customerService.getUserByUserId(customerId);
+            return ResponseEntity.ok(user);
+
+        } catch (UserNotFoundException e) {
+            log.info(e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity<UserDTO> updateCustomer(@PathVariable String customerId, @RequestBody UserRequest customer) {
+        try {
+            UserDTO updatedCustomer = customerService.updateUser(customerId, userMapper.fromRequestToDto(customer));
             return ResponseEntity.ok(updatedCustomer);
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());
@@ -46,9 +58,9 @@ public class CustomerController {
     }
 
     @DeleteMapping
-    public ResponseEntity<UserDTO> deleteCustomer(@RequestParam("userId") String userId) {
+    public ResponseEntity<UserDTO> deleteCustomer(@RequestParam("customerId") String customerId) {
         try {
-            userService.deleteUser(userId);
+            customerService.deleteUser(customerId);
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());

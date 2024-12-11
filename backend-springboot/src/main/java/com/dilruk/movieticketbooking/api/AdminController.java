@@ -2,33 +2,30 @@ package com.dilruk.movieticketbooking.api;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
+import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
-import com.dilruk.movieticketbooking.services.user.AbstractUserService;
+import com.dilruk.movieticketbooking.services.user.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/admins")
 @RequiredArgsConstructor
-public class UserController {
+public class AdminController {
 
-    private final AbstractUserService userService;
+    private final AdminService adminService;
     private final UserMapper userMapper;
 
-
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest user) {
+    public ResponseEntity<UserDTO> createAdmin(@RequestBody UserRequest admin) {
         try {
-            UserDTO savedUser = userService.createUser(userMapper.fromRequestToDto(user));
-            return ResponseEntity.ok(savedUser);
-        } catch (DuplicateDataException e) {
+            UserDTO savedAdmin = adminService.createUser(userMapper.fromRequestToDto(admin));
+            return ResponseEntity.ok(savedAdmin);
+        } catch (UserAlreadyExistsException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -37,17 +34,11 @@ public class UserController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> findAllUsersByUserRole(String role) {
-        List<UserDTO> users = userService.findUsersByRole(role);
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String id) {
+    @GetMapping("/{adminId}")
+    public ResponseEntity<UserDTO> getAdminById(@PathVariable String adminId) {
         try {
-            UserDTO user = userService.findUserByUserId(id);
-            return ResponseEntity.ok(user);
+            UserDTO admin = adminService.getUserByUserId(adminId);
+            return ResponseEntity.ok(admin);
 
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());
@@ -55,11 +46,11 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody UserRequest user) {
+    @PutMapping("/{adminId}")
+    public ResponseEntity<UserDTO> updateAdmin(@PathVariable String adminId, @RequestBody UserRequest admin) {
         try {
-            UserDTO updatedUser = userService.updateUser(id, userMapper.fromRequestToDto(user));
-            return ResponseEntity.ok(updatedUser);
+            UserDTO updatedAdmin = adminService.updateUser(adminId, userMapper.fromRequestToDto(admin));
+            return ResponseEntity.ok(updatedAdmin);
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());
             return ResponseEntity.notFound().build();
@@ -67,9 +58,9 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<UserDTO> deleteUser(@RequestParam("userId") String userId) {
+    public ResponseEntity<UserDTO> deleteAdmin(@RequestParam("adminId") String adminId) {
         try {
-            userService.deleteUser(userId);
+            adminService.deleteUser(adminId);
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());

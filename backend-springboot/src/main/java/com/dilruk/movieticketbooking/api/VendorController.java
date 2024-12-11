@@ -2,7 +2,7 @@ package com.dilruk.movieticketbooking.api;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
+import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
 import com.dilruk.movieticketbooking.services.user.VendorService;
@@ -19,19 +19,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VendorController {
 
-    private final UserService userService;
+    private final VendorService vendorService;
     private final UserMapper userMapper;
 
+    @PostMapping
+    public ResponseEntity<UserDTO> createVendor(@RequestBody UserRequest user) {
+        try {
+            UserDTO savedVendor = vendorService.createUser(userMapper.fromRequestToDto(user));
+            return ResponseEntity.ok(savedVendor);
+        } catch (UserAlreadyExistsException e) {
+            log.info(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUser() {
-        List<UserDTO> vendors = userService.getAllVendors();
+    public ResponseEntity<List<UserDTO>> getAllVendors() {
+        List<UserDTO> vendors = vendorService.getAllUsers();
         return ResponseEntity.ok(vendors);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<VendorDTO> getVendor(@PathVariable String id) {
+    @GetMapping("/{vendorId}")
+    public ResponseEntity<UserDTO> getVendorByVendorId(@PathVariable String vendorId) {
         try {
-            VendorDTO vendor = userService.getVendorById(id);
+            UserDTO vendor = vendorService.getUserByUserId(vendorId);
             return ResponseEntity.ok(vendor);
 
         } catch (UserNotFoundException e) {
@@ -40,10 +54,10 @@ public class VendorController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<VendorDTO> updateVendor(@PathVariable String id, @RequestBody VendorRequest vendor) {
+    @PutMapping("/{customerId}")
+    public ResponseEntity<UserDTO> updateVendor(@PathVariable String customerId, @RequestBody UserRequest vendor) {
         try {
-            VendorDTO updatedVendor = userService.updateVendor(id, userMapper.fromRequestToDto(vendor));
+            UserDTO updatedVendor = vendorService.updateUser(customerId, userMapper.fromRequestToDto(vendor));
             return ResponseEntity.ok(updatedVendor);
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());
@@ -52,9 +66,9 @@ public class VendorController {
     }
 
     @DeleteMapping
-    public ResponseEntity<VendorDTO> deleteVendor(@RequestParam("vendorId") String vendorId) {
+    public ResponseEntity<UserDTO> deleteVendor(@RequestParam("vendorId") String vendorId) {
         try {
-            userService.deleteVendor(vendorId);
+            vendorService.deleteUser(vendorId);
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException e) {
             log.info(e.getMessage());

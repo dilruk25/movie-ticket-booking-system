@@ -1,7 +1,7 @@
 package com.dilruk.movieticketbooking.services.event;
 
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
-import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
+import com.dilruk.movieticketbooking.exceptions.EventAlreadyExistsException;
+import com.dilruk.movieticketbooking.exceptions.EventNotFoundException;
 import com.dilruk.movieticketbooking.mappers.EventMapper;
 import com.dilruk.movieticketbooking.dtos.EventDTO;
 import com.dilruk.movieticketbooking.models.Event;
@@ -28,7 +28,7 @@ public class EventServiceImpl implements EventService {
     public EventDTO createEvent(EventDTO eventDTO) {
         Optional<Event> existEvent = eventRepository.findEventByEventId(eventDTO.getEventId());
         if (existEvent.isPresent()) {
-            throw new DuplicateDataException("Event already exists");
+            throw new EventAlreadyExistsException("Event already exists");
         }
 
         Event savedEvent = eventRepository.save(eventMapper.fromDtoToEntity(eventDTO));
@@ -44,7 +44,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDTO findEventById(String eventId) {
         Event existEvent = eventRepository.findEventByEventId(eventId)
-                .orElseThrow(() -> new UserNotFoundException("Event not found with the id: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with the id: " + eventId));
 
         return eventMapper.fromEntityToDto(existEvent);
     }
@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDTO updateEvent(String eventId, EventDTO eventDTO) {
         Event existingEvent = eventRepository.findEventByEventId(eventId)
-                .orElseThrow(() -> new UserNotFoundException("Event not found with the id: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with the id: " + eventId));
 
         existingEvent.setStartTime(eventDTO.getStartTime());
         existingEvent.setDate(eventDTO.getDate());
@@ -67,7 +67,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(String eventId) {
         Event existEvent = eventRepository.findEventByEventId(eventId)
-                .orElseThrow(() -> new UserNotFoundException("Event not found with the id: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with the id: " + eventId));
 
         eventRepository.delete(existEvent);
     }

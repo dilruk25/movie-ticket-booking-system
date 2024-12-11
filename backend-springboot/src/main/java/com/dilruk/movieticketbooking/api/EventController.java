@@ -1,6 +1,6 @@
 package com.dilruk.movieticketbooking.api;
 
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
+import com.dilruk.movieticketbooking.exceptions.EventAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.EventMapper;
 import com.dilruk.movieticketbooking.api.request.EventRequest;
@@ -28,7 +28,7 @@ public class EventController {
         try {
             EventDTO savedEvent = eventService.createEvent(eventMapper.fromRequestToDto(event));
             return ResponseEntity.ok(savedEvent);
-        } catch (DuplicateDataException e) {
+        } catch (EventAlreadyExistsException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {

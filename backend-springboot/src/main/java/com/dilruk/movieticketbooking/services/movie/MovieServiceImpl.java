@@ -1,7 +1,7 @@
-package com.dilruk.movieticketbooking.services;
+package com.dilruk.movieticketbooking.services.movie;
 
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
-import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
+import com.dilruk.movieticketbooking.exceptions.MovieAlreadyExistsException;
+import com.dilruk.movieticketbooking.exceptions.MovieNotFoundException;
 import com.dilruk.movieticketbooking.mappers.MovieMapper;
 import com.dilruk.movieticketbooking.dtos.MovieDTO;
 import com.dilruk.movieticketbooking.models.Movie;
@@ -28,7 +28,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieDTO createMovie(MovieDTO movieDTO) {
         Optional<Movie> existMovie = movieRepository.findMovieByTitle(movieDTO.getTitle());
         if (existMovie.isPresent()) {
-            throw new DuplicateDataException("Movie email already exists");
+            throw new MovieAlreadyExistsException("Movie email already exists");
         }
 
         Movie savedMovie = movieRepository.save(movieMapper.fromDtoToEntity(movieDTO));
@@ -36,15 +36,15 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> findAllMovies() {
+    public List<MovieDTO> getAllMovies() {
         List<Movie> movies = movieRepository.findAll();
         return movies.stream().map(movieMapper::fromEntityToDto).toList();
     }
 
     @Override
-    public MovieDTO findMovieById(String movieId) {
+    public MovieDTO getMovieById(String movieId) {
         Movie existMovie = movieRepository.findMovieByMovieId(movieId)
-                .orElseThrow(() -> new UserNotFoundException("Movie not found with the id: " + movieId));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with the id: " + movieId));
 
         return movieMapper.fromEntityToDto(existMovie);
     }
@@ -52,7 +52,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDTO updateMovie(String movieId, MovieDTO movieDTO) {
         Movie existingMovie = movieRepository.findMovieByMovieId(movieId)
-                .orElseThrow(() -> new UserNotFoundException("Movie not found with the id: " + movieId));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with the id: " + movieId));
 
         existingMovie.setTitle(movieDTO.getTitle());
         existingMovie.setDuration(movieDTO.getDuration());
@@ -67,8 +67,14 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void deleteMovie(String movieId) {
         Movie existMovie = movieRepository.findMovieByMovieId(movieId)
-                .orElseThrow(() -> new UserNotFoundException("Movie not found with the id: " + movieId));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with the id: " + movieId));
 
         movieRepository.delete(existMovie);
+    }
+
+    public MovieDTO getMovieByTitle(String title) {
+        Movie existMovie = movieRepository.findMovieByTitle(title).orElseThrow(() -> new MovieNotFoundException("Movie not found with the title: " + title));
+
+        return movieMapper.fromEntityToDto(existMovie);
     }
 }

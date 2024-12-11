@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.services;
+package com.dilruk.movieticketbooking.services.movie;
 
 import com.dilruk.movieticketbooking.dtos.MovieDTO;
 
@@ -8,9 +8,9 @@ public interface MovieService {
 
     MovieDTO createMovie(MovieDTO movieDTO);
 
-    List<MovieDTO> findAllMovies();
+    List<MovieDTO> getAllMovies();
 
-    MovieDTO findMovieById(String movieId);
+    MovieDTO getMovieById(String movieId);
 
     MovieDTO updateMovie(String movieId, MovieDTO movieDTO);
 

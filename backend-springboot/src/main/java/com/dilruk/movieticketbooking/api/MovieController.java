@@ -1,11 +1,11 @@
 package com.dilruk.movieticketbooking.api;
 
-import com.dilruk.movieticketbooking.exceptions.DuplicateDataException;
+import com.dilruk.movieticketbooking.exceptions.MovieAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.MovieMapper;
 import com.dilruk.movieticketbooking.api.request.MovieRequest;
 import com.dilruk.movieticketbooking.dtos.MovieDTO;
-import com.dilruk.movieticketbooking.services.MovieServiceImpl;
+import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class MovieController {
         try {
             MovieDTO savedMovie = movieService.createMovie(movieMapper.fromRequestToDto(movie));
             return ResponseEntity.ok(savedMovie);
-        } catch (DuplicateDataException e) {
+        } catch (MovieAlreadyExistsException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -39,14 +39,14 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<List<MovieDTO>> getAllMovies() {
-        List<MovieDTO> movies = movieService.findAllMovies();
+        List<MovieDTO> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<MovieDTO> getMovie(@PathVariable String id) {
         try {
-            MovieDTO movie = movieService.findMovieById(id);
+            MovieDTO movie = movieService.getMovieById(id);
             return ResponseEntity.ok(movie);
 
         } catch (UserNotFoundException e) {
