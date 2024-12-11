@@ -2,7 +2,6 @@ package com.dilruk.movieticketbooking.util;
 
 import com.dilruk.movieticketbooking.exception.FileWritingException;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,27 +9,23 @@ import java.util.logging.Logger;
 
 
 public class Logging {
-
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
+    public static String logFilePath;
     private static PrintStream printStream;
 
-    // Use static block for one time initialization
-    static {
+    /**
+     * Initializes the logging system by creating a new log file with a timestamped name.
+     * This should be called at the start of each simulation.
+     */
+    public static void initialize() {
         try {
-            String logFilePath = "logs.txt";
-            File logFile = new File(logFilePath);
+            logFilePath = FileHandlerUtil.generateLogFilePath();
+            FileHandlerUtil.createLogFile(logFilePath);
 
-            if (logFile.exists() && !logFile.delete()) {
-                logger.warning("\nExisting file cannot be deleted: " + logFilePath);
-                logger.warning("Overwriting existing file: " + logFilePath + "\n");
-            } else {
-                logger.info("\nCreated new file: " + logFilePath + "\n");
-            }
-
-            printStream = new PrintStream(new FileOutputStream(logFile, false));
-
+            printStream = new PrintStream(new FileOutputStream(logFilePath, false));
+            logger.info("Logging initialized. Log file: " + logFilePath + "\n");
         } catch (IOException e) {
-            throw new FileWritingException(e.getMessage());
+            throw new FileWritingException("Failed to initialize logging: " + e.getMessage());
         }
     }
 
