@@ -28,7 +28,7 @@ public class SimulationManager {
     /**
      * Retrieves the current state of the simulation (running or stopped).
      *
-     * @return true if the simulation is running, otherwise false.
+     * @return AtomicBoolean(true) if the simulation is running, otherwise AtomicBoolean(false).
      */
     public static AtomicBoolean getIsRunning() {
         return SimulationManager.isRunning;

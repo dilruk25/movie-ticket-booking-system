@@ -3,8 +3,7 @@ package com.dilruk.movieticketbooking.model.producer;
 import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
-import com.dilruk.movieticketbooking.util.LogUtil;
-import com.dilruk.movieticketbooking.util.SimulationManager;
+import com.dilruk.movieticketbooking.util.Logging;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,14 +26,14 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() || isVendorFinished.get()) {
+        while (!Thread.currentThread().isInterrupted() && !isVendorFinished.get()) {
 
             try {
                 if (Ticket.getTicketCount().intValue() >= totalTickets) {
-                    LogUtil.log("----------------------------------------");
-                    LogUtil.log(" Total ticket limit reached: " + this.totalTickets);
-                    LogUtil.log(" Ticket adding cannot be proceed");
-                    LogUtil.log("----------------------------------------\n");
+                    Logging.log("----------------------------------------");
+                    Logging.log(" Total ticket limit reached: " + this.totalTickets);
+                    Logging.log(" Ticket adding cannot be proceed");
+                    Logging.log("----------------------------------------\n");
                     isVendorFinished.set(true);
                     return;
                 }
@@ -44,7 +43,7 @@ public class Vendor implements Runnable {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                LogUtil.log("\nVendor threads have been manually interrupted.");
+                Logging.log("\nVendor threads have been manually interrupted.");
                 break;
             }
         }

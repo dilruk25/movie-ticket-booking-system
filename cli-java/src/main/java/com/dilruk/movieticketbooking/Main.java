@@ -1,27 +1,21 @@
 package com.dilruk.movieticketbooking;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.exception.FileReadingException;
 import com.dilruk.movieticketbooking.model.consumer.Customer;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.model.producer.Vendor;
-import com.dilruk.movieticketbooking.util.LogUtil;
+import com.dilruk.movieticketbooking.util.FileHandlerUtil;
+import com.dilruk.movieticketbooking.util.Logging;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static SimulationManager simulationManager = null;
-    private static Thread simulationThread = null;
 
     public static void main(String[] args) {
         welcome();
@@ -168,6 +162,7 @@ public class Main {
             System.out.println(" Simulation is already running.");
             System.out.println("----------------------------------------\n");
         } else {
+            Logging.initialize();
             SystemConfig.addSimulationConfig(); // Configure settings
             startConfirmation(); // Get confirmation to proceed simulation
         }
@@ -175,9 +170,10 @@ public class Main {
 
     private static void stopSimulation() {
         if (!SimulationManager.getIsRunning().get()) {
-            System.out.println("\n----------------------------------------");
-            System.out.println(" Simulation is not running.");
             System.out.println("----------------------------------------");
+            System.out.println(" Simulation is not running.");
+            System.out.println("----------------------------------------\n");
+            return;
         }
 
         if (Vendor.isVendorFinished.get()) {
@@ -191,7 +187,7 @@ public class Main {
             System.out.println(" Customer threads has already stopped.");
             System.out.println("----------------------------------------");
         } else {
-            System.out.println("\n  ----------------------------------------");
+            System.out.println("\n----------------------------------------");
             System.out.println(" Stopping simulation...");
 
             simulationManager.interruptSimulation();
@@ -202,41 +198,6 @@ public class Main {
     }
 
     private static void monitorTickets() {
-        final Logger logger = Logger.getLogger(LogUtil.class.getName());
-
-        BufferedReader bufferedReader = null;
-        int fileCheckCounter = 0;
-
-        File file = new File("logs.txt");
-
-        if (!file.exists()) {
-            logger.info("\"" + "logs.txt" + "\" not found. Run the simulator first.");
-            return;
-        }
-
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-            String line;
-
-            while (true) {
-                if (fileCheckCounter > 20) { // After fair 20 seconds, file reading is set to stopped predicting that the simulation has stopped.
-                    bufferedReader.close();
-                    return;
-                }
-
-                line = bufferedReader.readLine();
-                if (line != null) {
-                    System.out.println(line);
-                } else {
-                    fileCheckCounter++;
-                    Thread.sleep(1000);
-                }
-            }
-
-        } catch (IOException e) {
-            logger.warning("File can't be read.");
-        } catch (InterruptedException e) {
-            logger.warning("Finished reading file.");
-        }
+        FileHandlerUtil.readFile();
     }
 }

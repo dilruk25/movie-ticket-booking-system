@@ -4,7 +4,7 @@ import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
 import com.dilruk.movieticketbooking.model.pool.TicketPool;
 import com.dilruk.movieticketbooking.model.producer.Vendor;
-import com.dilruk.movieticketbooking.util.LogUtil;
+import com.dilruk.movieticketbooking.util.Logging;
 import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,16 +23,16 @@ public class Customer implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() || isCustomerFinished.get()) {
+        while (!Thread.currentThread().isInterrupted() && !isCustomerFinished.get()) {
             try {
 
                 if (Vendor.getIsVendorFinished().get() && ticketPool.getAvailableTicketList().isEmpty() && SystemConfig.getTotalTickets() == Ticket.getTicketCount().get()) {
-                    LogUtil.log("----------------------------------------");
-                    LogUtil.log("All tickets has been sold.");
-                    LogUtil.log("----------------------------------------\n");
+                    Logging.log("----------------------------------------");
+                    Logging.log("All tickets has been sold.");
+                    Logging.log("----------------------------------------\n");
                     isCustomerFinished.set(true);
                     SimulationManager.setIsRunning(new AtomicBoolean(false));
-                    LogUtil.close();
+                    Logging.close();
                     return;
                 }
 
@@ -43,7 +43,7 @@ public class Customer implements Runnable {
                 Thread.sleep(1000 / customerRetrievalRate);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                LogUtil.log("Customer threads have been manually interrupted.");
+                Logging.log("Customer threads have been manually interrupted.");
                 break;
             }
         }
