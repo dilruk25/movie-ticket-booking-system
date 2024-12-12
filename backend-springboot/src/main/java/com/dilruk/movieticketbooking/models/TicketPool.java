@@ -1,19 +1,45 @@
 package com.dilruk.movieticketbooking.models;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.dilruk.movieticketbooking.models.event.Ticket;
+import org.springframework.stereotype.Component;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "ticket_pools")
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+@Component
 public class TicketPool {
+    private final ConcurrentLinkedQueue<Ticket> tickets = new ConcurrentLinkedQueue<>();
+    private final Lock lock = new ReentrantLock();
+    private final int maxTicketCapacity;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String ticketPoolId;
-    private int totalTickets;
-    private int availableTickets;
+    public TicketPool(int maxTicketCapacity) {
+        this.maxTicketCapacity = maxTicketCapacity;
+    }
+
+    public boolean addTickets(Ticket ticket) {
+        lock.lock();
+        try {
+            if (tickets.size() < maxTicketCapacity) {
+                tickets.add(ticket);
+                return true;
+            }
+            return false; // Capacity reached
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public Ticket removeTicket() {
+        lock.lock();
+        try {
+            return tickets.poll(); // Removes and returns a ticket or null if empty
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int getTicketCount() {
+        return tickets.size();
+    }
 }

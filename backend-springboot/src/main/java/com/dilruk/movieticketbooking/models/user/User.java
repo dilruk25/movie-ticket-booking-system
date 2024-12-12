@@ -4,7 +4,6 @@ import com.dilruk.movieticketbooking.enums.UserRole;
 import com.dilruk.movieticketbooking.models.event.Event;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -41,11 +39,4 @@ public class User {
     // Use to remove all child events if the vendor has been deleted
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
-
-    User(String name, String email, String password, UserRole role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 }

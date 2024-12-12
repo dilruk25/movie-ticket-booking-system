@@ -1,15 +1,19 @@
 package com.dilruk.movieticketbooking.services.user;
 
+import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
+import com.dilruk.movieticketbooking.models.TicketPool;
 import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
-import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import com.dilruk.movieticketbooking.services.event.EventServiceImpl;
+import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,8 @@ import java.util.Optional;
 public abstract class AbstractUserService {
 
     // Make protected To allow access to the subclass
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractUserService.class);
+
     protected final UserRepository userRepository;
     protected final UserMapper userMapper;
     protected final MovieServiceImpl movieService;
@@ -32,6 +38,7 @@ public abstract class AbstractUserService {
     public UserDTO createUser(UserDTO userDTO) {
         Optional<User> existUser = userRepository.findUserByEmail(userDTO.getEmail());
         if (existUser.isPresent()) {
+            logger.error("User with email {} already exists", userDTO.getEmail());
             throw new UserAlreadyExistsException("User email already exists");
         }
         User savedUser = userRepository.save(userMapper.fromDtoToEntity(userDTO));
@@ -45,4 +52,9 @@ public abstract class AbstractUserService {
     public abstract UserDTO updateUser(String userId, UserDTO userDTO);
 
     public abstract void deleteUser(String userId);
+
+    // Use in vendors and customers to add/buy tickets. Currently, not use in admin.
+    public void performAction(SystemConfig systemConfig, TicketPool ticketPool) {
+        throw new UnsupportedOperationException("Not supported operation.");
+    }
 }
