@@ -92,7 +92,6 @@ public class Main {
             System.out.print(" [0] Exit\n> ");
 
             String option = scanner.nextLine().trim();
-//            String option = "1"; //TODO: REMOVE THIS
 
             // Use instead of "if-else statement" for readability & efficiency
             switch (option) {
@@ -127,7 +126,6 @@ public class Main {
 
             // Remove all leading and trailing spaces and converted to lowercase
             String input = scanner.nextLine().trim().toLowerCase();
-//            String input = "start"; //TODO: REMOVE THIS
 
             switch (input) {
 

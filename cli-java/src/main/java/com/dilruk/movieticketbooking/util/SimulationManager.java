@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Manages the entire simulation process, including creating and starting vendor and customer threads.
+ * It also provides methods to interrupt the simulation and check its current state.
+ */
 public class SimulationManager {
 
     // To stop the simulation process
@@ -41,6 +45,12 @@ public class SimulationManager {
         SimulationManager.isRunning = isRunning;
     }
 
+    /**
+     * Initializes the simulation by creating and starting vendor and customer threads.
+     * <p>
+     * The number of vendors and customers is determined by the configuration settings.
+     * Each vendor and customer thread is assigned a unique name for identification.
+     */
     public void createSimulation() {
 
         System.out.println("\n----------------------------------------");
@@ -66,6 +76,11 @@ public class SimulationManager {
         }
     }
 
+    /**
+     * Interrupts the running simulation, stopping all vendor and customer threads.
+     *<p>
+     * This method sets the `isRunning` flag to `false`, interrupts each thread, and then waits for them to finish.
+     */
     public void interruptSimulation() {
         isRunning.set(false);
 

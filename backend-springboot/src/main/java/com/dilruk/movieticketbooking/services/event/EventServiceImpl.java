@@ -4,7 +4,7 @@ import com.dilruk.movieticketbooking.exceptions.EventAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.EventNotFoundException;
 import com.dilruk.movieticketbooking.mappers.EventMapper;
 import com.dilruk.movieticketbooking.dtos.EventDTO;
-import com.dilruk.movieticketbooking.models.Event;
+import com.dilruk.movieticketbooking.models.event.Event;
 import com.dilruk.movieticketbooking.repositories.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

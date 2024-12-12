@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.models;
+package com.dilruk.movieticketbooking.models.event;
 
 import jakarta.persistence.*;
 import lombok.Getter;

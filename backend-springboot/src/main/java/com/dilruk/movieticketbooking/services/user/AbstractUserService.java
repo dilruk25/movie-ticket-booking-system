@@ -3,7 +3,7 @@ package com.dilruk.movieticketbooking.services.user;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
-import com.dilruk.movieticketbooking.models.User;
+import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import com.dilruk.movieticketbooking.services.event.EventServiceImpl;

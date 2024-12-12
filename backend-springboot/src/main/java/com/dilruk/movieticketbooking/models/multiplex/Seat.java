@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.models;
+package com.dilruk.movieticketbooking.models.multiplex;
 
 import com.dilruk.movieticketbooking.enums.SeatType;
 import jakarta.persistence.Entity;

@@ -15,6 +15,7 @@ public class Logging {
 
     /**
      * Initializes the logging system by creating a new log file with a timestamped name.
+     * <p>
      * This should be called at the start of each simulation.
      */
     public static void initialize() {
@@ -29,6 +30,10 @@ public class Logging {
         }
     }
 
+    /**
+     * Allows to add console output with logging to a log file
+     * @param message
+     */
     public static void printlnAndLog(String message) {
         System.out.println(message);
         if (printStream != null) {
@@ -36,12 +41,21 @@ public class Logging {
         }
     }
 
+    /**
+     * Allows to add logging to a log file without console output
+     * @param message
+     */
     public static void log(String message) {
         if (printStream != null) {
             printStream.println(message); // Print message to file
         }
     }
 
+    /**
+     * Closes the underlying print stream used for logging.
+     * <p>
+     * This method should be called when the logging is no longer needed.
+     */
     public static void close() {
         if (printStream != null) {
             printStream.close();

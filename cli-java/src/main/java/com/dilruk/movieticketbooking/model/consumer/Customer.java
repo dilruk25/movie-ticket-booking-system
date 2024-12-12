@@ -9,18 +9,36 @@ import com.dilruk.movieticketbooking.util.SimulationManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Represents a customer in the movie ticket booking simulation. Customers attempt to purchase tickets from the shared ticket pool at a specified rate.
+ */
 public class Customer implements Runnable {
 
+    /**
+     * Indicates whether all customers have finished their ticket purchasing attempts.
+     */
     public static volatile AtomicBoolean isCustomerFinished = new AtomicBoolean(false);
+
     private final TicketPool ticketPool;
     private final int customerRetrievalRate;
 
+    /**
+     * Constructs a new Customer instance.
+     *
+     * @param ticketPool The shared ticket pool from which customers purchase tickets.
+     */
     public Customer(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
         this.customerRetrievalRate = SystemConfig.getCustomerRetrievalRate();
     }
 
-
+    /**
+     * The main execution loop for the customer.
+     * <p>
+     * 1. Checks if all vendors have finished and all tickets have been sold.
+     * 2. Attempts to purchase a ticket from the ticket pool if available.
+     * 3. Sleeps for a specified duration based on the customer retrieval rate.
+     */
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted() && !isCustomerFinished.get()) {

@@ -1,6 +1,6 @@
 package com.dilruk.movieticketbooking.repositories;
 
-import com.dilruk.movieticketbooking.models.Event;
+import com.dilruk.movieticketbooking.models.event.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

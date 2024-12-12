@@ -26,6 +26,12 @@ public class FileHandlerUtil {
         return LOG_FILE_PREFIX + timestamp + LOG_FILE_EXTENSION;
     }
 
+    /**
+     * Reads the contents of the log file line by line and prints them to the console.
+     * <p>
+     * If the file doesn't exist or no new content is available, the method waits for a period before retrying.
+     * After a certain number of retries without new content, it assumes the simulation has stopped and exits.
+     */
     public static void readFile() {
 
         BufferedReader bufferedReader = null;
@@ -71,7 +77,8 @@ public class FileHandlerUtil {
     }
 
     /**
-     * Creates a new log file. If an old file exists, it is not overwritten.
+     * Creates a new log file with a timestamp.
+     * If an old file exists, it's not override the existing file
      */
     public static void createLogFile(String filePath) {
         try {

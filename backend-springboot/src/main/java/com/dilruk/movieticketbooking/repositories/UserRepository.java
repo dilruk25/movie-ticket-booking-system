@@ -1,7 +1,7 @@
 package com.dilruk.movieticketbooking.repositories;
 
 import com.dilruk.movieticketbooking.enums.UserRole;
-import com.dilruk.movieticketbooking.models.User;
+import com.dilruk.movieticketbooking.models.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -8,34 +8,32 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Manages the pool of available movie tickets.
+ */
 public class TicketPool {
 
-    private static final AtomicLong ticketPoolCount = new AtomicLong(0);
-    // The total no of tickets available in the system
     private final int totalTickets;
-    // Maximum capacity of the ticket pool
-    // Always maxTicketCapacity should be less than the totalTickets to prevent from memory overhead
     private final int maxTicketCapacity;
-    // Available Tickets are stored in an array
     private final Queue<Ticket> availableTicketList;
 
-
+    /**
+     * Creates a new TicketPool instance.
+     */
     public TicketPool() {
-        ticketPoolCount.incrementAndGet();
         this.totalTickets = SystemConfig.getTotalTickets();
         this.maxTicketCapacity = SystemConfig.getMaxTicketCapacity();
         this.availableTicketList = new ConcurrentLinkedQueue<>();
-    }
-
-    // This method only use if we use multiple ticket pools in the system.
-    public synchronized AtomicLong getTicketPoolCount() {
-        return TicketPool.ticketPoolCount;
     }
 
     public synchronized Queue<Ticket> getAvailableTicketList() {
         return this.availableTicketList;
     }
 
+    /**
+     * Adds a new ticket to the pool
+     * waiting if the pool is full.
+     */
     public synchronized void addTicket() {
 
         while (availableTicketList.size() >= maxTicketCapacity) {
@@ -64,6 +62,10 @@ public class TicketPool {
         notifyAll();
     }
 
+    /**
+     * Removes and returns a ticket from the pool
+     * waiting if the pool is empty.
+     **/
     public synchronized void buyTicket() {
         while (availableTicketList.isEmpty()) {
             Logging.log("\n----------------------------------------");

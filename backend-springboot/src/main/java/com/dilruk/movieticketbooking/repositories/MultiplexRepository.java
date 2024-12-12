@@ -1,6 +1,6 @@
 package com.dilruk.movieticketbooking.repositories;
 
-import com.dilruk.movieticketbooking.models.Multiplex;
+import com.dilruk.movieticketbooking.models.multiplex.Multiplex;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

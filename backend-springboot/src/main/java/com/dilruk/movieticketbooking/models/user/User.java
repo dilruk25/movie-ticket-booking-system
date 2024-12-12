@@ -1,7 +1,7 @@
-package com.dilruk.movieticketbooking.models;
+package com.dilruk.movieticketbooking.models.user;
 
 import com.dilruk.movieticketbooking.enums.UserRole;
-import com.dilruk.movieticketbooking.models.Event;
+import com.dilruk.movieticketbooking.models.event.Event;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

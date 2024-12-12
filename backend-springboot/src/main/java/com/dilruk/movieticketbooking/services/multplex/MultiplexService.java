@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.services;
+package com.dilruk.movieticketbooking.services.multplex;
 
 import com.dilruk.movieticketbooking.dtos.MultiplexDTO;
 

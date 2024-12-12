@@ -1,4 +1,4 @@
-package com.dilruk.movieticketbooking.models;
+package com.dilruk.movieticketbooking.models.multiplex;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

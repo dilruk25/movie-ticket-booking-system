@@ -3,7 +3,7 @@ package com.dilruk.movieticketbooking.mappers;
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.api.response.UserResponse;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.models.User;
+import com.dilruk.movieticketbooking.models.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
