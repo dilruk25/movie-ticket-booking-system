@@ -1,1 +1,10 @@
-<p>config-gather works!</p>
+<div>
+  <h2>Configuration Gather Form</h2>
+  <form (submit)="onSubmit()">
+    <div class="form-group">
+      <label for="configField">Configuration Field</label>
+      <input type="text" class="form-control" id="configField" [(ngModel)]="configField" name="configField" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
