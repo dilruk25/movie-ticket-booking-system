@@ -32,7 +32,7 @@ public class VendorService extends AbstractUserService {
      */
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> vendors = userRepository.findUsersByRole(UserRole.VENDOR);
+        List<User> vendors = userRepository.findUsersByRole(UserRole.ROLE_VENDOR);
         return vendors.stream().map(userMapper::fromEntityToDto).toList();
     }
 
@@ -45,7 +45,7 @@ public class VendorService extends AbstractUserService {
      */
     @Override
     public UserDTO getUserByUserId(String userId) {
-        User existVendor = userRepository.findUserByRoleAndUserId(UserRole.CUSTOMER, userId)
+        User existVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
 
         return userMapper.fromEntityToDto(existVendor);
@@ -61,7 +61,7 @@ public class VendorService extends AbstractUserService {
      */
     @Override
     public UserDTO updateUser(String userId, UserDTO userDTO) {
-        User existingVendor = userRepository.findUserByRoleAndUserId(UserRole.VENDOR, userId)
+        User existingVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_VENDOR, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
 
         existingVendor.setName(userDTO.getName());
@@ -83,7 +83,7 @@ public class VendorService extends AbstractUserService {
      */
     @Override
     public void deleteUser(String userId) {
-        User existVendor = userRepository.findUserByRoleAndUserId(UserRole.VENDOR, userId)
+        User existVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_VENDOR, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
 
         userRepository.delete(existVendor);

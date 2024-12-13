@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.time.Year;
 
 @Getter
 @Setter
@@ -22,5 +23,7 @@ public class MovieRequest {
     private String genre;
     @NotEmpty
     private double rating;
+    @NotEmpty
+    private Year year;
 
 }

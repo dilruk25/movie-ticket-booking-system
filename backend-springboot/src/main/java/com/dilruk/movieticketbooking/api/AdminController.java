@@ -23,26 +23,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller that handles all requests related to the Admin functionalities
+ * such as creating and managing users, system configurations, and starting threads.
+ */
 @Slf4j
 @RestController
 @RequestMapping("api/v1/super")
 @RequiredArgsConstructor
 public class AdminController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final AdminService adminService;
     private final VendorService vendorService;
     private final CustomerService customerService;
     private final UserMapper userMapper;
-    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
     private final TicketProcessor ticketProcessor;
 
+    /**
+     * Create a new admin user.
+     *
+     * @param admin the admin details from the request body
+     * @return ResponseEntity containing the created admin user data
+     */
     @PostMapping
     public ResponseEntity<UserDTO> createAdmin(@RequestBody UserRequest admin) {
         try {
             UserDTO savedAdmin = adminService.createUser(userMapper.fromRequestToDto(admin));
             logger.info("Created admin: {}", savedAdmin);
             return ResponseEntity.ok(savedAdmin);
-
         } catch (UserAlreadyExistsException e) {
             logger.info("Admin already exists: {}", e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -52,6 +61,12 @@ public class AdminController {
         }
     }
 
+    /**
+     * Configure the system settings with given configurations.
+     *
+     * @param config the system configuration details
+     * @return ResponseEntity indicating the result of the configuration attempt
+     */
     @PostMapping("/config")
     public ResponseEntity<String> configureSystem(@RequestBody @Valid ConfigRequest config) {
         try {
@@ -66,18 +81,30 @@ public class AdminController {
         }
     }
 
+    /**
+     * Fetch the details of an admin user by ID.
+     *
+     * @param adminId the ID of the admin user
+     * @return ResponseEntity containing the admin details
+     */
     @GetMapping("/{adminId}")
     public ResponseEntity<UserDTO> getAdminById(@PathVariable String adminId) {
         try {
             UserDTO admin = adminService.getUserByUserId(adminId);
             return ResponseEntity.ok(admin);
-
         } catch (UserNotFoundException e) {
             logger.info("Admin not found: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
 
+    /**
+     * Update an admins' details.
+     *
+     * @param adminId the ID of the admin to be updated
+     * @param admin   the new admin details
+     * @return ResponseEntity containing the updated admin details
+     */
     @PutMapping("/{adminId}")
     public ResponseEntity<UserDTO> updateAdmin(@PathVariable String adminId, @RequestBody UserRequest admin) {
         try {
@@ -90,6 +117,12 @@ public class AdminController {
         }
     }
 
+    /**
+     * Delete an admin user by their ID.
+     *
+     * @param adminId the ID of the admin to be deleted
+     * @return ResponseEntity indicating the result of the deletion attempt
+     */
     @DeleteMapping
     public ResponseEntity<UserDTO> deleteAdmin(@RequestParam("adminId") String adminId) {
         try {
@@ -104,6 +137,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * Retrieve the current system configurations.
+     *
+     * @return ResponseEntity containing the current system configuration
+     */
     @GetMapping("/configure")
     public ResponseEntity<SystemConfig> getConfigs() {
         try {
@@ -115,8 +153,13 @@ public class AdminController {
         }
     }
 
+    /**
+     * Start the Vendor thread to manage ticket operations.
+     *
+     * @return ResponseEntity indicating the result of starting the Vendor thread
+     */
     @PostMapping("/threads/vendor/exec")
-    public ResponseEntity<String> IstartVendor() {
+    public ResponseEntity<String> startVendor() {
         try {
             if (VendorThread.isRunning.get()) {
                 return ResponseEntity.badRequest().body("Vendor thread is already running.");
@@ -132,6 +175,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * Start the Customer thread to manage ticket purchases.
+     *
+     * @return ResponseEntity indicating the result of starting the Customer thread
+     */
     @PostMapping("/threads/customer/exec")
     public ResponseEntity<String> startCustomer() {
         try {
@@ -149,43 +197,68 @@ public class AdminController {
         }
     }
 
+    /**
+     * Get the total ticket count managed by the system.
+     *
+     * @return the total number of tickets available
+     */
     @GetMapping("/count")
     public int getTicketCount() {
         return ticketProcessor.getTicketCount();
     }
 
+    /**
+     * Get a list of all vendors in the system.
+     *
+     * @return ResponseEntity containing a list of all vendors
+     */
     @GetMapping("/vendors")
     public ResponseEntity<List<UserDTO>> getAllVendors() {
         List<UserDTO> vendors = vendorService.getAllUsers();
         return ResponseEntity.ok(vendors);
     }
 
-    @GetMapping("vendors/{vendorId}")
+    /**
+     * Get the details of a specific vendor by their ID.
+     *
+     * @param vendorId the ID of the vendor to retrieve
+     * @return ResponseEntity containing the vendor details
+     */
+    @GetMapping("/vendors/{vendorId}")
     public ResponseEntity<UserDTO> getVendorByVendorId(@PathVariable String vendorId) {
         try {
             UserDTO vendor = vendorService.getUserByUserId(vendorId);
             return ResponseEntity.ok(vendor);
-
         } catch (UserNotFoundException e) {
-            log.info(e.getMessage());
+            logger.info("Vendor not found: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
 
+    /**
+     * Get a list of all customers in the system.
+     *
+     * @return ResponseEntity containing a list of all customers
+     */
     @GetMapping("/customers")
     public ResponseEntity<List<UserDTO>> getAllCustomers() {
         List<UserDTO> customers = customerService.getAllUsers();
         return ResponseEntity.ok(customers);
     }
 
-    @GetMapping("customers/{customerId}")
+    /**
+     * Get the details of a specific customer by their ID.
+     *
+     * @param customerId the ID of the customer to retrieve
+     * @return ResponseEntity containing the customer details
+     */
+    @GetMapping("/customers/{customerId}")
     public ResponseEntity<UserDTO> getCustomerById(@PathVariable String customerId) {
         try {
             UserDTO user = customerService.getUserByUserId(customerId);
             return ResponseEntity.ok(user);
-
         } catch (UserNotFoundException e) {
-            log.info(e.getMessage());
+            logger.info("Customer not found: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }

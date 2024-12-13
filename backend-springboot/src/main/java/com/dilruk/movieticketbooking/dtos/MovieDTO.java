@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.time.Year;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class MovieDTO {
     private LocalTime duration;
     private String genre;
     private double rating;
+    private Year year;
 
     public MovieDTO() {
         this.movieId = IdGenerator.generateId(IdPrefix.MOVIE_PREFIX.getPrefix());

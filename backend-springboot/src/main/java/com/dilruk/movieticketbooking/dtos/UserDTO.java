@@ -18,11 +18,11 @@ public class UserDTO {
 
     public UserDTO() {
 
-        if (this.role.equals(UserRole.ADMIN)) {
+        if (this.role.equals(UserRole.ROLE_ADMIN)) {
             this.userId = IdGenerator.generateId(IdPrefix.ADMIN_PREFIX.getPrefix());
-        } else if (this.role.equals(UserRole.CUSTOMER)) {
+        } else if (this.role.equals(UserRole.ROLE_CUSTOMER)) {
             this.userId = IdGenerator.generateId(IdPrefix.CUSTOMER_PREFIX.getPrefix());
-        } else if (this.role.equals(UserRole.VENDOR)) {
+        } else if (this.role.equals(UserRole.ROLE_VENDOR)) {
             this.userId = IdGenerator.generateId(IdPrefix.VENDOR_PREFIX.getPrefix());
         }
     }

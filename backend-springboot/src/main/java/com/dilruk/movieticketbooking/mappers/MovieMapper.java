@@ -15,6 +15,7 @@ public class MovieMapper {
         movieDTO.setDuration(request.getDuration());
         movieDTO.setGenre(request.getGenre());
         movieDTO.setRating(request.getRating());
+        movieDTO.setYear(request.getYear());
 
         return movieDTO;
     }
@@ -26,6 +27,7 @@ public class MovieMapper {
         movie.setDuration(movieDTO.getDuration());
         movie.setGenre(movieDTO.getGenre());
         movie.setRating(movieDTO.getRating());
+        movie.setYear(movieDTO.getYear());
 
         return movie;
     }
@@ -37,6 +39,7 @@ public class MovieMapper {
         movieDTO.setDuration(movie.getDuration());
         movieDTO.setGenre(movie.getGenre());
         movieDTO.setRating(movie.getRating());
+        movieDTO.setYear(movie.getYear());
 
         return movieDTO;
     }
@@ -48,6 +51,7 @@ public class MovieMapper {
         response.setDuration(movieDTO.getDuration());
         response.setGenre(movieDTO.getGenre());
         response.setRating(movieDTO.getRating());
+        response.setYear(movieDTO.getYear());
 
         return response;
     }

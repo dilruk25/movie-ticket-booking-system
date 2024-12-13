@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.time.Year;
 
 @Entity
 @Table(name = "movies")
@@ -29,4 +30,6 @@ public class Movie {
     private String genre;
 
     private double rating;
+
+    private Year year;
 }

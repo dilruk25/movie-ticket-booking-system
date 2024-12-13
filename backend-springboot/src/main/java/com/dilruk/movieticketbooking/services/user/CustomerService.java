@@ -14,12 +14,16 @@ import com.dilruk.movieticketbooking.services.thread.TicketProcessor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * Service class handling customer related functionalities.
+ * Service class handling customer-related functionalities.
  */
 @Service
 public class CustomerService extends AbstractUserService {
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Thread pool for better resource management
 
     public CustomerService(UserRepository userRepository, MovieServiceImpl movieService, UserMapper userMapper) {
         super(userRepository, userMapper, movieService);
@@ -32,7 +36,7 @@ public class CustomerService extends AbstractUserService {
      */
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> customers = userRepository.findUsersByRole(UserRole.CUSTOMER);
+        List<User> customers = userRepository.findUsersByRole(UserRole.ROLE_CUSTOMER);
         return customers.stream().map(userMapper::fromEntityToDto).toList();
     }
 
@@ -45,7 +49,7 @@ public class CustomerService extends AbstractUserService {
      */
     @Override
     public UserDTO getUserByUserId(String userId) {
-        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.CUSTOMER, userId)
+        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
                 .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         return userMapper.fromEntityToDto(existCustomer);
@@ -54,14 +58,14 @@ public class CustomerService extends AbstractUserService {
     /**
      * Updates an existing customer's information.
      *
-     * @param userId The user ID of the customer to update.
+     * @param userId  The user ID of the customer to update.
      * @param userDTO The updated customer information.
      * @return {@link UserDTO} representing the updated customer.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
     @Override
     public UserDTO updateUser(String userId, UserDTO userDTO) {
-        User existingCustomer = userRepository.findUserByRoleAndUserId(UserRole.CUSTOMER, userId)
+        User existingCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
                 .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         existingCustomer.setName(userDTO.getName());
@@ -71,6 +75,7 @@ public class CustomerService extends AbstractUserService {
 
         User updatedCustomer = userRepository.save(existingCustomer);
 
+        logger.info("Customer updated successfully: {}", userId);
         return userMapper.fromEntityToDto(updatedCustomer);
     }
 
@@ -82,26 +87,32 @@ public class CustomerService extends AbstractUserService {
      */
     @Override
     public void deleteUser(String userId) {
-        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.CUSTOMER, userId)
+        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
                 .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         userRepository.delete(existCustomer);
+        logger.info("Customer deleted successfully: {}", userId);
     }
 
     /**
-     * Overrides the base method to perform a customer specific action.
-     *<p>
-     * This implementation creates a new `CustomerThread` instance with the provided configuration and ticket pool.
+     * Performs an action for the customer by starting a new thread to process ticket actions.
+     * <p>
+     * Uses a thread pool for better thread management and resource usage.
      *
-     * @param systemConfig The system configuration object containing relevant settings for the customer.
-     * @param ticketProcessor the ticket processor object used by the thread to process tickets
+     * @param systemConfig    The system configuration containing settings relevant to the customer.
+     * @param ticketProcessor The ticket processor used by the customer thread.
      */
     @Override
     public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
-        new CustomerThread(systemConfig, ticketProcessor).start();
-        logger.info("Customer thread started");
+        executorService.submit(new CustomerThread(systemConfig, ticketProcessor));  // Submit task to thread pool
+        logger.info("Customer action initiated: Ticket processing started.");
     }
 
+    /**
+     * Retrieves all movies available in the system.
+     *
+     * @return List of {@link MovieDTO} representing the available movies.
+     */
     public List<MovieDTO> getAllMovies() {
         return movieService.getAllMovies();
     }
