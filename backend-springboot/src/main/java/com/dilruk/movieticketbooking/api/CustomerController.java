@@ -34,18 +34,6 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<UserDTO> getCustomerById(@PathVariable String customerId) {
-        try {
-            UserDTO user = customerService.getUserByUserId(customerId);
-            return ResponseEntity.ok(user);
-
-        } catch (UserNotFoundException e) {
-            log.info(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PutMapping("/{customerId}")
     public ResponseEntity<UserDTO> updateCustomer(@PathVariable String customerId, @RequestBody UserRequest customer) {
         try {

@@ -1,7 +1,6 @@
 package com.dilruk.movieticketbooking.models.user;
 
 import com.dilruk.movieticketbooking.enums.UserRole;
-import com.dilruk.movieticketbooking.models.event.Event;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,9 +33,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role; // ADMIN, VENDOR, CUSTOMER
-
-    // Only applicable for vendors
-    // Use to remove all child events if the vendor has been deleted
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Event> events = new ArrayList<>();
 }

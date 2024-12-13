@@ -13,13 +13,19 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRequest {
+public class AddTicketsRequest {
 
+    @NotEmpty
+    private String MovieId;
+    @NotEmpty
+    private int noOfTickets;
     @NotEmpty
     private LocalDate date;
     @NotEmpty
     private LocalTime startTime;
     @NotEmpty
-    private LocalTime endTime;
+    private double price;
+    @NotEmpty
+    private LocalDate ticketDate;
 
 }

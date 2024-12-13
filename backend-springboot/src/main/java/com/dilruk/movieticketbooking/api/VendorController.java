@@ -8,10 +8,10 @@ import com.dilruk.movieticketbooking.mappers.UserMapper;
 import com.dilruk.movieticketbooking.services.user.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,6 +21,7 @@ public class VendorController {
 
     private final VendorService vendorService;
     private final UserMapper userMapper;
+    private final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
     @PostMapping
     public ResponseEntity<UserDTO> createVendor(@RequestBody UserRequest user) {
@@ -33,24 +34,6 @@ public class VendorController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllVendors() {
-        List<UserDTO> vendors = vendorService.getAllUsers();
-        return ResponseEntity.ok(vendors);
-    }
-
-    @GetMapping("/{vendorId}")
-    public ResponseEntity<UserDTO> getVendorByVendorId(@PathVariable String vendorId) {
-        try {
-            UserDTO vendor = vendorService.getUserByUserId(vendorId);
-            return ResponseEntity.ok(vendor);
-
-        } catch (UserNotFoundException e) {
-            log.info(e.getMessage());
-            return ResponseEntity.notFound().build();
         }
     }
 

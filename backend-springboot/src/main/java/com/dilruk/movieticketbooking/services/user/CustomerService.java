@@ -6,12 +6,11 @@ import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.enums.UserRole;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
-import com.dilruk.movieticketbooking.models.TicketPool;
 import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
-import com.dilruk.movieticketbooking.services.event.EventServiceImpl;
 import com.dilruk.movieticketbooking.services.thread.CustomerThread;
+import com.dilruk.movieticketbooking.services.thread.TicketProcessor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +21,8 @@ import java.util.List;
 @Service
 public class CustomerService extends AbstractUserService {
 
-    public CustomerService(UserRepository userRepository, MovieServiceImpl movieService, EventServiceImpl eventService, UserMapper userMapper) {
-        super(userRepository, userMapper, movieService, eventService);
+    public CustomerService(UserRepository userRepository, MovieServiceImpl movieService, UserMapper userMapper) {
+        super(userRepository, userMapper, movieService);
     }
 
     /**
@@ -91,15 +90,15 @@ public class CustomerService extends AbstractUserService {
 
     /**
      * Overrides the base method to perform a customer specific action.
-     *
+     *<p>
      * This implementation creates a new `CustomerThread` instance with the provided configuration and ticket pool.
      *
      * @param systemConfig The system configuration object containing relevant settings for the customer.
-     * @param ticketPool The shared ticket pool used for ticket purchases.
+     * @param ticketProcessor the ticket processor object used by the thread to process tickets
      */
     @Override
-    public void performAction(SystemConfig systemConfig, TicketPool ticketPool) {
-        new CustomerThread(systemConfig, ticketPool).start();
+    public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
+        new CustomerThread(systemConfig, ticketProcessor).start();
         logger.info("Customer thread started");
     }
 

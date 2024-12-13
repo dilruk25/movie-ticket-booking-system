@@ -2,14 +2,12 @@ package com.dilruk.movieticketbooking.services.user;
 
 import com.dilruk.movieticketbooking.api.request.ConfigRequest;
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.dtos.EventDTO;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.enums.UserRole;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
 import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
-import com.dilruk.movieticketbooking.services.event.EventServiceImpl;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +19,15 @@ import java.util.List;
 @Service
 public class AdminService extends AbstractUserService {
 
-    public AdminService(UserRepository userRepository, MovieServiceImpl movieService, EventServiceImpl eventService, UserMapper userMapper) {
-        super(userRepository, userMapper, movieService, eventService);
+    private SystemConfig systemConfig;
+
+
+    public AdminService(UserRepository userRepository, MovieServiceImpl movieService, UserMapper userMapper) {
+        super(userRepository, userMapper, movieService);
     }
 
     public void configureSystem(ConfigRequest configRequest) {
-        SystemConfig systemConfig = new SystemConfig();
+        this.systemConfig = new SystemConfig();
         systemConfig.setTotalTickets(configRequest.getTotalTickets());
         systemConfig.setMaxTicketCapacity(configRequest.getMaxTicketCapacity());
         systemConfig.setTicketReleaseRate(configRequest.getTicketReleaseRate());
@@ -99,11 +100,15 @@ public class AdminService extends AbstractUserService {
     }
 
     /**
-     * Retrieves all events of all vendors
+     * Retrieves the current system configuration.
      *
-     * @return A list of {@link EventDTO} representing all events.
+     * @return The current {@link SystemConfig}.
+     * @throws IllegalStateException If the system has not been configured yet.
      */
-    public List<EventDTO> getAllEvents() {
-        return eventService.findAllEvents();
+    public SystemConfig getConfiguration() {
+        if (this.systemConfig == null) {
+            throw new IllegalStateException("System configuration has not been set. Please configure the system first.");
+        }
+        return this.systemConfig;
     }
 }

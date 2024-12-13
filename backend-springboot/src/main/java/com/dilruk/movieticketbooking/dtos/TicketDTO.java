@@ -10,14 +10,14 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class EventDTO {
+public class TicketDTO {
 
-    private String eventId;
+    private String ticketId;
+    private double price;
     private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalTime time;
 
-    public EventDTO() {
-        this.eventId = IdGenerator.generateId(IdPrefix.EVENT_PREFIX.getPrefix());
+    public TicketDTO() {
+        this.ticketId = IdGenerator.generateId(IdPrefix.TICKET_PREFIX.getPrefix());
     }
 }

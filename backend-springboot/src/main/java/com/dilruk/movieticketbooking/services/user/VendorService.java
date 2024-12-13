@@ -1,17 +1,15 @@
 package com.dilruk.movieticketbooking.services.user;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
-import com.dilruk.movieticketbooking.dtos.EventDTO;
 import com.dilruk.movieticketbooking.dtos.MovieDTO;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.enums.UserRole;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
-import com.dilruk.movieticketbooking.models.TicketPool;
 import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
-import com.dilruk.movieticketbooking.services.event.EventServiceImpl;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
+import com.dilruk.movieticketbooking.services.thread.TicketProcessor;
 import com.dilruk.movieticketbooking.services.thread.VendorThread;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,8 @@ import java.util.List;
 @Service
 public class VendorService extends AbstractUserService {
 
-    public VendorService(UserRepository userRepository, MovieServiceImpl movieService, EventServiceImpl eventService, UserMapper userMapper) {
-        super(userRepository, userMapper, movieService, eventService);
+    public VendorService(UserRepository userRepository, MovieServiceImpl movieService, UserMapper userMapper) {
+        super(userRepository, userMapper, movieService);
     }
 
     /**
@@ -98,21 +96,12 @@ public class VendorService extends AbstractUserService {
      * This implementation creates a new `VendorThread` instance with the provided configuration and ticket pool.
      *
      * @param systemConfig The system configuration object containing relevant settings for the vendor.
-     * @param ticketPool The shared ticket pool used for adding tickets.
+     * @param ticketProcessor the ticket processor object used by the thread to process tickets
      */
     @Override
-    public void performAction(SystemConfig systemConfig, TicketPool ticketPool) {
-        new VendorThread(systemConfig, ticketPool).start();
+    public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
+        new VendorThread(systemConfig, ticketProcessor).start();
         logger.info("Vendor thread started");
-    }
-
-    /**
-     * Retrieves a list of all events.
-     *
-     * @return A list of EventDTOs representing all events.
-     */
-    public List<EventDTO> findAllEvents() {
-        return eventService.findAllEvents();
     }
 
     /**
@@ -123,45 +112,5 @@ public class VendorService extends AbstractUserService {
      */
     public MovieDTO createMovie(MovieDTO movieDTO) {
         return movieService.createMovie(movieDTO);
-    }
-
-    /**
-     * Adds a new event.
-     *
-     * @param eventDTO The event data to create.
-     * @return The created event as an EventDTO.
-     */
-    public EventDTO addEvent(EventDTO eventDTO) {
-        return eventService.createEvent(eventDTO);
-    }
-
-    /**
-     * Updates an existing event.
-     *
-     * @param id The ID of the event to update.
-     * @param eventDTO The updated event data.
-     * @return The updated event as an EventDTO.
-     */
-    public EventDTO updateEvent(String id, EventDTO eventDTO) {
-        return eventService.updateEvent(id, eventDTO);
-    }
-
-    /**
-     * Deletes an event.
-     *
-     * @param id The ID of the event to delete.
-     */
-    public void deleteEvent(String id) {
-        eventService.deleteEvent(id);
-    }
-
-    /**
-     * Finds events associated with a specific vendor.
-     *
-     * @param userId The user ID of the vendor.
-     * @return A list of EventDTOs associated with the vendor.
-     */
-    public List<EventDTO> findEventsByVendorUserId(String userId) {
-        return eventService.findEventsByVendorId(userId);
     }
 }

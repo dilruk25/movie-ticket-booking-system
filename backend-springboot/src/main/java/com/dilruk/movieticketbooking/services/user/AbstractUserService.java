@@ -4,11 +4,10 @@ import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
-import com.dilruk.movieticketbooking.models.TicketPool;
 import com.dilruk.movieticketbooking.models.user.User;
 import com.dilruk.movieticketbooking.repositories.UserRepository;
-import com.dilruk.movieticketbooking.services.event.EventServiceImpl;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
+import com.dilruk.movieticketbooking.services.thread.TicketProcessor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,6 @@ public abstract class AbstractUserService {
     protected final UserRepository userRepository;
     protected final UserMapper userMapper;
     protected final MovieServiceImpl movieService;
-    protected final EventServiceImpl eventService;
-
 
     // Implemented method
     public UserDTO createUser(UserDTO userDTO) {
@@ -54,7 +51,7 @@ public abstract class AbstractUserService {
     public abstract void deleteUser(String userId);
 
     // Use in vendors and customers to add/buy tickets. Currently, not use in admin.
-    public void performAction(SystemConfig systemConfig, TicketPool ticketPool) {
+    public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
         throw new UnsupportedOperationException("Not supported operation.");
     }
 }

@@ -1,5 +1,7 @@
-package com.dilruk.movieticketbooking.models.event;
+package com.dilruk.movieticketbooking.models.ticket;
 
+import com.dilruk.movieticketbooking.models.movie.Movie;
+import com.dilruk.movieticketbooking.models.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,11 +23,21 @@ public class Ticket { // Place the booking for the event
     @Column(nullable = false, unique = true)
     private String ticketId;
     @Column(nullable = false)
-    private double price;
-    @Column(nullable = false)
     private LocalDate date;
     @Column(nullable = false)
-    private LocalTime time;
+    private LocalTime startTime;
+    @Column(nullable = false)
+    private double price;
+    @Column(nullable = false)
+    private boolean availability;
+
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private User user;
 
     public Ticket(String ticketId, double price) {
         this.ticketId = ticketId;
