@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/admin")
-public class AdminController extends AbstractUserController {
+public class AdminController extends UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final AdminService adminService;

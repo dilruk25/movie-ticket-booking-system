@@ -13,5 +13,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Optional<Ticket> findTopByOrderByIdAsc();
 
-    Optional<List<Ticket>> findTicketsByUser_UserId(String userId);
+    Optional<List<Ticket>> findTicketsByVendor_UserId(String userId);
 }

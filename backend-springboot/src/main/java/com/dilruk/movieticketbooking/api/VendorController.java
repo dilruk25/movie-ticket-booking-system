@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/vendors")
-public class VendorController extends AbstractUserController {
+public class VendorController extends UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final VendorService vendorService;

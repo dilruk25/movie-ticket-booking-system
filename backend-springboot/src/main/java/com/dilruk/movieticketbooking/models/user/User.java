@@ -1,8 +1,11 @@
 package com.dilruk.movieticketbooking.models.user;
 
+import com.dilruk.movieticketbooking.models.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +31,7 @@ public class User {
 
     @Column(nullable = false)
     private String role; // ADMIN, VENDOR, CUSTOMER
+
+    @OneToMany(mappedBy = "customer")
+    private List<Ticket> tickets;
 }

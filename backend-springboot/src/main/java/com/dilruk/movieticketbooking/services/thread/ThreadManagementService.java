@@ -20,11 +20,11 @@ public class ThreadManagementService {
     private static final Logger logger = LoggerFactory.getLogger(ThreadManagementService.class);
 
     private final TicketProcessor ticketProcessor;
-    private ConcurrentHashMap<String, Thread> customerThreads = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Thread> vendorThreads = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Thread> customerThreads = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Thread> vendorThreads = new ConcurrentHashMap<>();
 
-    private AtomicInteger vendorThreadCounter = new AtomicInteger(0);
-    private AtomicInteger customerThreadCounter = new AtomicInteger(0);
+    private final AtomicInteger vendorThreadCounter = new AtomicInteger(0);
+    private final AtomicInteger customerThreadCounter = new AtomicInteger(0);
 
     /**
      * Starts the Vendor thread which will add tickets to the pool.

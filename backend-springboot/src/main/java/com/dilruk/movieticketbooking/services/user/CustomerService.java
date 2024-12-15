@@ -46,7 +46,7 @@ public class CustomerService extends UserService {
      * @return {@link UserDTO} representing the retrieved customer.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    public UserDTO getUserByUserId(String userId) {
+    public UserDTO getCustomerByCustomerId(String userId) {
         User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         return userMapper.fromEntityToDto(existCustomer);
@@ -60,7 +60,7 @@ public class CustomerService extends UserService {
      * @return {@link UserDTO} representing the updated customer.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    public UserDTO updateUser(String userId, UserDTO userDTO) {
+    public UserDTO updateCustomer(String userId, UserDTO userDTO) {
         User existingCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         existingCustomer.setName(userDTO.getName());
@@ -80,7 +80,7 @@ public class CustomerService extends UserService {
      * @param userId The user ID of the customer to delete.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    public void deleteUser(String userId) {
+    public void deleteCustomer(String userId) {
         User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         userRepository.delete(existCustomer);

@@ -37,7 +37,11 @@ public class Ticket { // Place the booking for the event
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
-    private User user;
+    private User vendor;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private User customer;
 
     public Ticket(String ticketId, double price) {
         this.ticketId = ticketId;

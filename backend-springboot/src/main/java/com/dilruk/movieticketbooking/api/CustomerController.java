@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/customers")
-public class CustomerController extends AbstractUserController {
+public class CustomerController extends UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CustomerService customerService;
@@ -50,7 +50,7 @@ public class CustomerController extends AbstractUserController {
     @GetMapping("/{customerId}")
     public ResponseEntity<UserDTO> getCustomerById(@PathVariable String customerId) {
         try {
-            UserDTO user = customerService.getUserByUserId(customerId);
+            UserDTO user = customerService.getCustomerByCustomerId(customerId);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             logger.info("Customer not found: {}", e.getMessage());
@@ -68,7 +68,7 @@ public class CustomerController extends AbstractUserController {
     @PutMapping("/{customerId}")
     public ResponseEntity<UserDTO> updateCustomer(@PathVariable String customerId, @RequestBody UserRequest customer) {
         try {
-            UserDTO updatedCustomer = customerService.updateUser(customerId, userMapper.fromRequestToDto(customer));
+            UserDTO updatedCustomer = customerService.updateCustomer(customerId, userMapper.fromRequestToDto(customer));
             return ResponseEntity.ok(updatedCustomer);
         } catch (UserNotFoundException e) {
             logger.info("Customer not found: {}", e.getMessage());
@@ -85,7 +85,7 @@ public class CustomerController extends AbstractUserController {
     @DeleteMapping
     public ResponseEntity<UserDTO> deleteCustomer(@RequestParam("customerId") String customerId) {
         try {
-            customerService.deleteUser(customerId);
+            customerService.deleteCustomer(customerId);
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException e) {
             logger.info("Customer not found: {}", e.getMessage());

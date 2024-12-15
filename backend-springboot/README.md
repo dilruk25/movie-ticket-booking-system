@@ -1,4 +1,4 @@
-# Ticket Corner - Backend
+# TICKET Corner - Backend
 
 Welcome to **Ticket Corner**, a movie ticket booking system that allows customers to book tickets for movies, vendors to manage the available tickets, and administrators to manage users and roles.
 

@@ -133,7 +133,7 @@ public class TicketServiceImpl implements TicketService {
      */
     @Override
     public List<TicketDTO> findTicketsByVendorId(String userId) {
-        List<Ticket> tickets = ticketRepository.findTicketsByUser_UserId(userId)
+        List<Ticket> tickets = ticketRepository.findTicketsByVendor_UserId(userId)
                 .orElseThrow(() -> new UserNotFoundException("No tickets found for vendor with ID: " + userId));
 
         return tickets.stream()
