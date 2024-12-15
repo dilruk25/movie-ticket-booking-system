@@ -1,9 +1,10 @@
 package com.dilruk.movieticketbooking.mappers;
 
 import com.dilruk.movieticketbooking.api.request.MovieRequest;
-import com.dilruk.movieticketbooking.api.response.MovieResponse;
 import com.dilruk.movieticketbooking.dtos.MovieDTO;
+import com.dilruk.movieticketbooking.enums.IdPrefix;
 import com.dilruk.movieticketbooking.models.movie.Movie;
+import com.dilruk.movieticketbooking.utils.IdGenerator;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +23,7 @@ public class MovieMapper {
 
     public Movie fromDtoToEntity(MovieDTO movieDTO) {
         Movie movie = new Movie();
-        movie.setMovieId(movieDTO.getMovieId());
+        movie.setMovieId(IdGenerator.generateId(IdPrefix.MOVIE_PREFIX.getPrefix()));
         movie.setTitle(movieDTO.getTitle());
         movie.setDuration(movieDTO.getDuration());
         movie.setGenre(movieDTO.getGenre());
@@ -42,17 +43,5 @@ public class MovieMapper {
         movieDTO.setYear(movie.getYear());
 
         return movieDTO;
-    }
-
-    public MovieResponse fromDtoToResponse(MovieDTO movieDTO) {
-        MovieResponse response = new MovieResponse();
-        response.setMovieId(movieDTO.getMovieId());
-        response.setTitle(movieDTO.getTitle());
-        response.setDuration(movieDTO.getDuration());
-        response.setGenre(movieDTO.getGenre());
-        response.setRating(movieDTO.getRating());
-        response.setYear(movieDTO.getYear());
-
-        return response;
     }
 }

@@ -23,21 +23,15 @@ public class TicketPool {
     private final Lock lock = new ReentrantLock();  // Lock to ensure thread safety
     private final TicketRepository ticketRepository;  // Repository to interact with the database
     private final int maxTicketCapacity;  // Maximum capacity of the ticket pool
-    private final int totalTickets;  // Total number of tickets to be made available initially
-    private final int ticketReleaseRate;  // Rate at which tickets are released into the pool
-    private final int customerRetrievalRate;  // Rate at which customers retrieve tickets from the pool
 
     /**
      * Constructs a TicketPool instance with the specified system configuration and ticket repository.
      *
-     * @param systemConfig The configuration object containing system settings like ticket release rate and capacity.
+     * @param systemConfig     The configuration object containing system settings like ticket release rate and capacity.
      * @param ticketRepository The repository to interact with the ticket database.
      */
     public TicketPool(SystemConfig systemConfig, TicketRepository ticketRepository) {
         this.maxTicketCapacity = systemConfig.getMaxTicketCapacity();
-        this.totalTickets = systemConfig.getTotalTickets();
-        this.ticketReleaseRate = systemConfig.getTicketReleaseRate();
-        this.customerRetrievalRate = systemConfig.getCustomerRetrievalRate();
         this.ticketRepository = ticketRepository;
     }
 

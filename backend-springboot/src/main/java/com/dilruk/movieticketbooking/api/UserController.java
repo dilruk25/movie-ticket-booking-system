@@ -32,28 +32,4 @@ public class UserController {
         UserDTO createdUser = userService.createUser(userDTO);
         return ResponseEntity.ok(createdUser);
     }
-
-    /**
-     * Performs login using basic authentication. Requires a valid "Authorization" header
-     * containing credentials encoded in Base64 format (username:password).
-     *
-     * @param authorization The "Authorization" header containing user credentials.
-     * @return A ResponseEntity containing a JWT token upon successful login.
-     */
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestHeader("Authorization") String authorization) {
-        String jwtToken = "yourJWTTokenHere";
-        return ResponseEntity.ok(jwtToken);
-    }
-
-    /**
-     * Logs out the user.
-     *
-     * @return An empty ResponseEntity with OK status code.
-     */
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        // TODO
-        return ResponseEntity.ok().build();
-    }
 }

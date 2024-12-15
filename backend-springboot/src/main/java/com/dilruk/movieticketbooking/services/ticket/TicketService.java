@@ -9,6 +9,8 @@ public interface TicketService {
 
     TicketDTO createTicket(TicketDTO ticketDTO);
 
+    List<TicketDTO> addTickets(AddTicketsRequest request);
+
     List<TicketDTO> findAllTickets();
 
     TicketDTO findTicketById(String ticketId);
@@ -17,5 +19,4 @@ public interface TicketService {
 
     List<TicketDTO> findTicketsByVendorId(String userId);
 
-    List<TicketDTO> addTickets(AddTicketsRequest request);
 }

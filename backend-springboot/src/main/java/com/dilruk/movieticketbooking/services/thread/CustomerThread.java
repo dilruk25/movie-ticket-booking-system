@@ -25,7 +25,7 @@ public class CustomerThread extends Thread {
     /**
      * Constructor to initialize the customer thread with the system configuration and ticket processor.
      *
-     * @param systemConfig The system configuration containing ticket retrieval rate.
+     * @param systemConfig    The system configuration containing ticket retrieval rate.
      * @param ticketProcessor The processor responsible for managing ticket purchase and processing.
      */
     public CustomerThread(SystemConfig systemConfig, TicketProcessor ticketProcessor) {

@@ -1,7 +1,5 @@
 package com.dilruk.movieticketbooking.dtos;
 
-import com.dilruk.movieticketbooking.enums.IdPrefix;
-import com.dilruk.movieticketbooking.utils.IdGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +15,4 @@ public class TicketDTO {
     private LocalDate date;
     private LocalTime time;
 
-    public TicketDTO() {
-        this.ticketId = IdGenerator.generateId(IdPrefix.TICKET_PREFIX.getPrefix());
-    }
 }

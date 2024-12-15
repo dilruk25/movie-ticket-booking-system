@@ -1,7 +1,6 @@
 package com.dilruk.movieticketbooking.mappers;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
-import com.dilruk.movieticketbooking.api.response.UserResponse;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
 import com.dilruk.movieticketbooking.enums.IdPrefix;
 import com.dilruk.movieticketbooking.models.user.User;
@@ -25,7 +24,7 @@ public class UserMapper {
     public User fromDtoToEntity(UserDTO userDTO) {
         User user = new User();
 
-        String role = userDTO.getRole().toUpperCase().replace(" ","_");
+        String role = userDTO.getRole().toUpperCase().replace(" ", "_");
 
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
@@ -51,16 +50,5 @@ public class UserMapper {
         userDTO.setRole(user.getRole());
 
         return userDTO;
-    }
-
-    public UserResponse fromDtoToResponse(UserDTO userDTO) {
-        UserResponse response = new UserResponse();
-
-        response.setUserId(userDTO.getUserId());
-        response.setName(userDTO.getName());
-        response.setEmail(userDTO.getEmail());
-        response.setRole(userDTO.getRole());
-
-        return response;
     }
 }

@@ -1,5 +1,8 @@
 package com.dilruk.movieticketbooking.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum IdPrefix {
 
     // "TC" stands for TicketCorner
@@ -15,7 +18,4 @@ public enum IdPrefix {
         this.prefix = prefix;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
 }

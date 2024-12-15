@@ -1,10 +1,10 @@
 package com.dilruk.movieticketbooking.api;
 
+import com.dilruk.movieticketbooking.api.request.MovieRequest;
+import com.dilruk.movieticketbooking.dtos.MovieDTO;
 import com.dilruk.movieticketbooking.exceptions.MovieAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.MovieMapper;
-import com.dilruk.movieticketbooking.api.request.MovieRequest;
-import com.dilruk.movieticketbooking.dtos.MovieDTO;
 import com.dilruk.movieticketbooking.services.movie.MovieServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +79,7 @@ public class MovieController {
     /**
      * Updates an existing movie's details.
      *
-     * @param id the ID of the movie to update
+     * @param id      the ID of the movie to update
      * @param request the updated movie details to be applied
      * @return ResponseEntity containing the updated movie details or not found response
      */

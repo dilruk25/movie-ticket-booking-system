@@ -1,12 +1,9 @@
 package com.dilruk.movieticketbooking.dtos;
 
-import com.dilruk.movieticketbooking.enums.IdPrefix;
-import com.dilruk.movieticketbooking.utils.IdGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.time.Year;
 
 @Getter
@@ -20,7 +17,4 @@ public class MovieDTO {
     private double rating;
     private Year year;
 
-    public MovieDTO() {
-        this.movieId = IdGenerator.generateId(IdPrefix.MOVIE_PREFIX.getPrefix());
-    }
 }
