@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Vendor implements Runnable {
 
     /**
-     * Represents a vendor in the movie ticket booking simulation. Vendors add tickets to the shared ticket pool at a specified rate.
+     * Indicates whether all vendors have finished.
      */
-    public static volatile AtomicBoolean isVendorFinished = new AtomicBoolean(false);
+    public static AtomicBoolean isVendorFinished = new AtomicBoolean(false);
 
     private final TicketPool ticketPool;
     private final int totalTickets;
@@ -56,7 +56,7 @@ public class Vendor implements Runnable {
                 if (Ticket.getTicketCount().intValue() >= totalTickets) {
                     Logging.log("----------------------------------------");
                     Logging.log(" Total ticket limit reached: " + this.totalTickets);
-                    Logging.log(" Ticket adding cannot be proceed");
+                    Logging.log(" Ticket adding cannot proceed");
                     Logging.log("----------------------------------------\n");
                     isVendorFinished.set(true);
                     return;

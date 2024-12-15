@@ -1,14 +1,14 @@
-## **Movie Ticket Booking Simulation**
+# **TICKET Corner - Simulation**
 
 **A Java CLI application simulating a concurrent movie ticket booking system.**
 
-### **Getting Started**
+## **Getting Started**
 
-#### **Prerequisites:**
+### **Prerequisites:**
 * Java Development Kit (JDK) 17 or later
 * Maven
 
-#### **Installation:**
+### **Installation:**
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/dilruk25/movie-ticket-booking-system.git

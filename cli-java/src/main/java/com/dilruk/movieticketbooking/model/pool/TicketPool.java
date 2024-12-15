@@ -2,10 +2,12 @@ package com.dilruk.movieticketbooking.model.pool;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
 import com.dilruk.movieticketbooking.model.Ticket;
+import com.dilruk.movieticketbooking.model.producer.Vendor;
 import com.dilruk.movieticketbooking.util.Logging;
 
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -23,16 +25,20 @@ public class TicketPool {
     public TicketPool() {
         this.totalTickets = SystemConfig.getTotalTickets();
         this.maxTicketCapacity = SystemConfig.getMaxTicketCapacity();
-        this.availableTicketList = new ConcurrentLinkedQueue<>();
-    }
-
-    public synchronized Queue<Ticket> getAvailableTicketList() {
-        return this.availableTicketList;
+        this.availableTicketList = new LinkedList<>();
     }
 
     /**
-     * Adds a new ticket to the pool
-     * waiting if the pool is full.
+     * Checks if the ticket pool is empty.
+     *
+     * @return True if the ticket pool is empty, False otherwise.
+     */
+    public synchronized boolean isEmpty() {
+        return availableTicketList.isEmpty();
+    }
+
+    /**
+     * Adds a new ticket to the pool, waiting if the pool is full.
      */
     public synchronized void addTicket() {
 
@@ -45,7 +51,9 @@ public class TicketPool {
             try {
                 wait();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
+                Logging.log("Vendor thread interrupted while waiting.");
+                return;
             }
         }
 
@@ -59,15 +67,21 @@ public class TicketPool {
         Logging.log(" [" + Thread.currentThread().getName() + "]" + " added: " + ticket);
         Logging.log(" Available tickets: " + availableTicketList.size());
         Logging.log("----------------------------------------\n");
-        notifyAll();
+
+        if(Ticket.getTicketCount().get() == totalTickets) {
+            Vendor.isVendorFinished.set(true);
+        }
+        notify();
     }
 
     /**
-     * Removes and returns a ticket from the pool
-     * waiting if the pool is empty.
+     * Removes and returns a ticket from the pool, waiting if the pool is empty.
      **/
     public synchronized void buyTicket() {
         while (availableTicketList.isEmpty()) {
+            if (Vendor.isVendorFinished.get()) {
+                return;
+            }
             Logging.log("\n----------------------------------------");
             Logging.log(" No Tickets available. Waiting ...");
             Logging.log("----------------------------------------\n");
@@ -75,9 +89,12 @@ public class TicketPool {
             try {
                 wait(); // Wait until a ticket is added
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
+                Logging.log("Customer thread interrupted while waiting.");
+                return;
             }
         }
+
         // To display the removed ticket from the list
         Ticket boughtTicket = availableTicketList.poll();
 
@@ -86,7 +103,6 @@ public class TicketPool {
         Logging.log(" Available tickets: " + availableTicketList.size());
         Logging.log("----------------------------------------\n");
 
-        notifyAll(); // Notify threads waiting to add tickets
+        notify(); // Notify threads waiting to add tickets
     }
 }
-

@@ -83,6 +83,8 @@ public class SimulationManager {
      */
     public void interruptSimulation() {
         isRunning.set(false);
+        Vendor.isVendorFinished.set(true);
+        Customer.isCustomerFinished.set(true);
 
             if (!vendorList.isEmpty()) {
                 for (Thread thread : vendorList) {
@@ -109,6 +111,7 @@ public class SimulationManager {
                         thread.join();
                     }
                 }
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println("Stop Simulation has interrupted.");
