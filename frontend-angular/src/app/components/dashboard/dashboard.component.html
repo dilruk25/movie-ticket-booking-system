@@ -1,6 +1,11 @@
 <div>
   <h2>Dashboard</h2>
-  <p>Tickets Bought: {{dashboardData?.ticketsBought}}</p>
-  <p>Tickets Sold: {{dashboardData?.ticketsSold}}</p>
-  <p>Available Tickets: {{dashboardData?.availableTickets}}</p>
+  <div *ngIf="dashboardData">
+    <p>Tickets Bought: {{dashboardData.ticketsBought}}</p>
+    <p>Tickets Sold: {{dashboardData.ticketsSold}}</p>
+    <p>Available Tickets: {{dashboardData.availableTickets}}</p>
+  </div>
+  <div *ngIf="!dashboardData">
+    <p>Loading dashboard data...</p>
+  </div>
 </div>

@@ -1,31 +1,37 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
+import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfigGatherComponent } from './components/config-gather/config-gather.component';
-import { ThreadManagementComponent } from './components/thread-management/thread-management.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { TicketConfigurationComponent } from './components/ticket-configuration/ticket-configuration.component';
+import { MovieLandingComponent } from './components/movie-landing/movie-landing.component';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 const routes: Routes = [
-  { path: 'config', component: ConfigGatherComponent },
-  { path: 'threads', component: ThreadManagementComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: '', redirectTo: '/config', pathMatch: 'full' }
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'ticket-configuration', component: TicketConfigurationComponent },
+  { path: '' +
+      '', component: MovieLandingComponent }
 ];
+
+bootstrapApplication(AppComponent);
+provideHttpClient(withInterceptorsFromDi());
 
 @NgModule({
   declarations: [],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(routes),
     AppComponent,
-    ThreadManagementComponent,
-    ConfigGatherComponent,
-    DashboardComponent
+    LoginComponent,
+    RegisterComponent,
+    TicketConfigurationComponent,
+    MovieLandingComponent
   ],
   providers: [],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }

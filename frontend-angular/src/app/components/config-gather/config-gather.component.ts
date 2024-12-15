@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-config-gather',
-  imports: [
-    FormsModule
-  ],
   templateUrl: './config-gather.component.html'
 })
 export class ConfigGatherComponent {
-  configField: string | undefined;
+  configField: string = '';
+  submissionSuccess: boolean = false;
 
   onSubmit() {
-    // TODO: Logic?
+    // Logic to handle configuration submission
     console.log('Configuration submitted:', this.configField);
+    this.submissionSuccess = true;
+
+    // Reset the field
+    this.configField = '';
   }
 }

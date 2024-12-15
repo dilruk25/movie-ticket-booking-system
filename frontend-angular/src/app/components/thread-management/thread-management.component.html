@@ -1,7 +1,13 @@
 <div>
   <h2>Thread Management</h2>
-  <button (click)="startCustomer()" class="btn btn-success">Start Customer Threads</button>
-  <button (click)="stopCustomer()" class="btn btn-danger">Stop Customer Threads</button>
-  <button (click)="startVendor()" class="btn btn-success">Start Vendor Threads</button>
-  <button (click)="stopVendor()" class="btn btn-danger">Stop Vendor Threads</button>
+  <div class="mb-3">
+    <h4>Customer Threads</h4>
+    <button (click)="startCustomer()" class="btn btn-success">Start Customer Threads</button>
+    <button (click)="stopCustomer()" class="btn btn-danger">Stop Customer Threads</button>
+  </div>
+  <div class="mb-3">
+    <h4>Vendor Threads</h4>
+    <button (click)="startVendor()" class="btn btn-success">Start Vendor Threads</button>
+    <button (click)="stopVendor()" class="btn btn-danger">Stop Vendor Threads</button>
+  </div>
 </div>

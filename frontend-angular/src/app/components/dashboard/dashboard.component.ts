@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   fetchDashboardData() {
     this.ticketService.getDashboardData().subscribe(data => {
       this.dashboardData = data;
+    }, error => {
+      console.error('Error fetching dashboard data:', error);
     });
   }
 }

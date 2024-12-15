@@ -1,0 +1,14 @@
+<div>
+  <h2>Ticket Configuration</h2>
+  <form (submit)="onSubmit()">
+    <div class="form-group">
+      <label for="movieId">Movie ID</label>
+      <input type="text" id="movieId" class="form-control" [(ngModel)]="addTicketsRequest.movieId" name="movieId" required>
+    </div>
+    <div class="form-group">
+      <label for="tickets">Number of Tickets</label>
+      <input type="number" id="tickets" class="form-control" [(ngModel)]="addTicketsRequest.tickets" name="tickets" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Tickets</button>
+  </form>
+</div>
