@@ -1,8 +1,6 @@
 package com.dilruk.movieticketbooking.api.request;
 
-import com.dilruk.movieticketbooking.enums.UserRole;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

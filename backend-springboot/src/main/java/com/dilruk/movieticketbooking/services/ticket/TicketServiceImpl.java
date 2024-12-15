@@ -62,20 +62,17 @@ public class TicketServiceImpl implements TicketService {
      * Adds multiple tickets to the repository based on the request and vendor ID.
      *
      * @param request The request containing ticket details.
-     * @param vendorId The ID of the vendor adding the tickets.
      * @return A list of TicketDTOs representing the added tickets.
      * @throws MovieNotFoundException If the specified movie is not found.
      * @throws UserNotFoundException If the specified vendor is not found.
      */
-    public List<TicketDTO> addTickets(AddTicketsRequest request, String vendorId) {
+    public List<TicketDTO> addTickets(AddTicketsRequest request) {
         Movie movie = findMovieById(request.getMovieId());
-        User vendor = findVendorById(vendorId);
 
         List<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < request.getNoOfTickets(); i++) {
             Ticket ticket = new Ticket();
             ticket.setMovie(movie);
-            ticket.setUser(vendor);
             ticket.setDate(request.getDate());
             ticket.setAvailability(true);
             tickets.add(ticket);

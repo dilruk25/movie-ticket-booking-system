@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.Year;
 
@@ -18,7 +19,7 @@ public class MovieRequest {
     @NotEmpty
     private String title;
     @NotEmpty
-    private LocalTime duration;
+    private Duration duration;
     @NotEmpty
     private String genre;
     @NotEmpty

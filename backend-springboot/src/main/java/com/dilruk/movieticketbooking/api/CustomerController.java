@@ -2,47 +2,59 @@ package com.dilruk.movieticketbooking.api;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
 import com.dilruk.movieticketbooking.services.user.CustomerService;
-import lombok.RequiredArgsConstructor;
+import com.dilruk.movieticketbooking.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller to handle customer-related requests, including creating, updating, and deleting customers.
  */
 @Slf4j
 @RestController
-@RequestMapping("api/v1/customers")
-@RequiredArgsConstructor
-public class CustomerController {
+@RequestMapping("/customers")
+public class CustomerController extends AbstractUserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CustomerService customerService;
-    private final UserMapper userMapper;
+
+    public CustomerController(UserService userService, CustomerService customerService, UserMapper userMapper) {
+        super(userService, userMapper);
+        this.customerService = customerService;
+    }
 
     /**
-     * Creates a new customer.
+     * Get a list of all customers in the system.
      *
-     * @param user the customer details provided in the request body
-     * @return ResponseEntity containing the created customer data
+     * @return ResponseEntity containing a list of all customers
      */
-    @PostMapping
-    public ResponseEntity<UserDTO> createCustomer(@RequestBody UserRequest user) {
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllCustomers() {
+        List<UserDTO> customers = customerService.getAllUsers();
+        return ResponseEntity.ok(customers);
+    }
+
+    /**
+     * Get the details of a specific customer by their ID.
+     *
+     * @param customerId the ID of the customer to retrieve
+     * @return ResponseEntity containing the customer details
+     */
+    @GetMapping("/{customerId}")
+    public ResponseEntity<UserDTO> getCustomerById(@PathVariable String customerId) {
         try {
-            UserDTO savedCustomer = customerService.createUser(userMapper.fromRequestToDto(user));
-            return ResponseEntity.ok(savedCustomer);
-        } catch (UserAlreadyExistsException e) {
-            logger.info("Customer already exists: {}", e.getMessage());
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            logger.error("Error occurred while creating customer: {}", e.getMessage());
-            return ResponseEntity.internalServerError().build();
+            UserDTO user = customerService.getUserByUserId(customerId);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException e) {
+            logger.info("Customer not found: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 

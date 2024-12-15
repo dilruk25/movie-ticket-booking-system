@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
  * Service class handling customer-related functionalities.
  */
 @Service
-public class CustomerService extends AbstractUserService {
+public class CustomerService extends UserService {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Thread pool for better resource management
 
@@ -34,7 +34,6 @@ public class CustomerService extends AbstractUserService {
      *
      * @return List of {@link UserDTO} representing customers.
      */
-    @Override
     public List<UserDTO> getAllUsers() {
         List<User> customers = userRepository.findUsersByRole(UserRole.ROLE_CUSTOMER);
         return customers.stream().map(userMapper::fromEntityToDto).toList();
@@ -47,10 +46,8 @@ public class CustomerService extends AbstractUserService {
      * @return {@link UserDTO} representing the retrieved customer.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    @Override
     public UserDTO getUserByUserId(String userId) {
-        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
-                .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
+        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         return userMapper.fromEntityToDto(existCustomer);
     }
@@ -63,10 +60,8 @@ public class CustomerService extends AbstractUserService {
      * @return {@link UserDTO} representing the updated customer.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    @Override
     public UserDTO updateUser(String userId, UserDTO userDTO) {
-        User existingCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
-                .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
+        User existingCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         existingCustomer.setName(userDTO.getName());
         existingCustomer.setEmail(userDTO.getEmail());
@@ -85,10 +80,8 @@ public class CustomerService extends AbstractUserService {
      * @param userId The user ID of the customer to delete.
      * @throws UserNotFoundException If the customer not found with the provided user ID.
      */
-    @Override
     public void deleteUser(String userId) {
-        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
-                .orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
+        User existCustomer = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId).orElseThrow(() -> new UserNotFoundException("Customer not found with the id: " + userId));
 
         userRepository.delete(existCustomer);
         logger.info("Customer deleted successfully: {}", userId);
@@ -102,7 +95,6 @@ public class CustomerService extends AbstractUserService {
      * @param systemConfig    The system configuration containing settings relevant to the customer.
      * @param ticketProcessor The ticket processor used by the customer thread.
      */
-    @Override
     public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
         executorService.submit(new CustomerThread(systemConfig, ticketProcessor));  // Submit task to thread pool
         logger.info("Customer action initiated: Ticket processing started.");

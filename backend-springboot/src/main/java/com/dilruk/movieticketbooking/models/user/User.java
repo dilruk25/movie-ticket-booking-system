@@ -1,12 +1,8 @@
 package com.dilruk.movieticketbooking.models.user;
 
-import com.dilruk.movieticketbooking.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +26,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role; // ADMIN, VENDOR, CUSTOMER
+    private String role; // ADMIN, VENDOR, CUSTOMER
 }

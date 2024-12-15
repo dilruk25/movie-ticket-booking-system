@@ -2,63 +2,73 @@ package com.dilruk.movieticketbooking.api;
 
 import com.dilruk.movieticketbooking.api.request.UserRequest;
 import com.dilruk.movieticketbooking.dtos.UserDTO;
-import com.dilruk.movieticketbooking.exceptions.UserAlreadyExistsException;
 import com.dilruk.movieticketbooking.exceptions.UserNotFoundException;
 import com.dilruk.movieticketbooking.mappers.UserMapper;
+import com.dilruk.movieticketbooking.services.user.UserService;
 import com.dilruk.movieticketbooking.services.user.VendorService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling vendor-related requests, including creating, updating, and deleting vendor profiles.
  */
 @Slf4j
 @RestController
-@RequestMapping("api/v1/vendors")
-@RequiredArgsConstructor
-public class VendorController {
+@RequestMapping("/vendors")
+public class VendorController extends AbstractUserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final VendorService vendorService;
-    private final UserMapper userMapper;
+
+    public VendorController(UserService userService, VendorService vendorService, UserMapper userMapper) {
+        super(userService, userMapper);
+        this.vendorService = vendorService;
+    }
 
     /**
-     * Creates a new vendor profile.
+     * Get a list of all vendors in the system.
      *
-     * @param user the request body containing the vendor details to be created
-     * @return ResponseEntity containing the created vendor's data, or an error response
+     * @return ResponseEntity containing a list of all vendors
      */
-    @PostMapping
-    public ResponseEntity<UserDTO> createVendor(@RequestBody UserRequest user) {
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllVendors() {
+        List<UserDTO> vendors = vendorService.getAllUsers();
+        return ResponseEntity.ok(vendors);
+    }
+
+    /**
+     * Get the details of a specific vendor by their ID.
+     *
+     * @param vendorId the ID of the vendor to retrieve
+     * @return ResponseEntity containing the vendor details
+     */
+    @GetMapping("/{vendorId}")
+    public ResponseEntity<UserDTO> getVendorByVendorId(@PathVariable String vendorId) {
         try {
-            UserDTO savedVendor = vendorService.createUser(userMapper.fromRequestToDto(user));
-            return ResponseEntity.ok(savedVendor);
-        } catch (UserAlreadyExistsException e) {
-            // Log the error and return a 400 Bad Request response
-            logger.info("Vendor already exists: {}", e.getMessage());
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            // Log unexpected errors and return a 500 Internal Server Error response
-            logger.error("Unexpected error occurred while creating vendor: {}", e.getMessage());
-            return ResponseEntity.internalServerError().build();
+            UserDTO vendor = vendorService.getUserByUserId(vendorId);
+            return ResponseEntity.ok(vendor);
+        } catch (UserNotFoundException e) {
+            logger.info("Vendor not found: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
     /**
      * Updates an existing vendor's profile.
      *
-     * @param customerId the ID of the vendor to be updated
-     * @param vendor the request body containing the updated vendor details
+     * @param vendorId the ID of the vendor to be updated
+     * @param vendor   the request body containing the updated vendor details
      * @return ResponseEntity containing the updated vendor's data, or an error response
      */
-    @PutMapping("/{customerId}")
-    public ResponseEntity<UserDTO> updateVendor(@PathVariable String customerId, @RequestBody UserRequest vendor) {
+    @PutMapping("/{vendorId}")
+    public ResponseEntity<UserDTO> updateVendor(@PathVariable String vendorId, @RequestBody UserRequest vendor) {
         try {
-            UserDTO updatedVendor = vendorService.updateUser(customerId, userMapper.fromRequestToDto(vendor));
+            UserDTO updatedVendor = vendorService.updateUser(vendorId, userMapper.fromRequestToDto(vendor));
             return ResponseEntity.ok(updatedVendor);
         } catch (UserNotFoundException e) {
             // Log the error and return a 404 Not Found response

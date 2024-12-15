@@ -17,5 +17,5 @@ public interface TicketService {
 
     List<TicketDTO> findTicketsByVendorId(String userId);
 
-    List<TicketDTO> addTickets(AddTicketsRequest request, String vendorId);
+    List<TicketDTO> addTickets(AddTicketsRequest request);
 }

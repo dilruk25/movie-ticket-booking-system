@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.Year;
 
@@ -16,7 +17,7 @@ public class MovieResponse {
 
     private String movieId;
     private String title;
-    private LocalTime duration;
+    private Duration duration;
     private String genre;
     private double rating;
     private Year year;

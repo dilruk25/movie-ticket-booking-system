@@ -1,6 +1,5 @@
 package com.dilruk.movieticketbooking.api.request;
 
-import com.dilruk.movieticketbooking.enums.UserRole;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ public class UserRequest {
     @NotEmpty
     private String email;
     @NotEmpty
-    private UserRole role;
+    private String role;
     @NotEmpty
     @Size(min = 6, max = 10)
     private String password;

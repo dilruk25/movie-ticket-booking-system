@@ -1,29 +1,30 @@
 package com.dilruk.movieticketbooking.services.thread;
 
 import com.dilruk.movieticketbooking.config.SystemConfig;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This service is responsible for managing the threads related to the ticket processing.
  * It can start vendor and customer threads for adding and removing tickets from the pool.
  */
 @Service
+@RequiredArgsConstructor
 public class ThreadManagementService {
 
     private static final Logger logger = LoggerFactory.getLogger(ThreadManagementService.class);
 
     private final TicketProcessor ticketProcessor;
+    private ConcurrentHashMap<String, Thread> customerThreads = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Thread> vendorThreads = new ConcurrentHashMap<>();
 
-    /**
-     * Constructor to initialize the ThreadManagementService with the TicketProcessor.
-     *
-     * @param ticketProcessor The processor that manages ticket operations.
-     */
-    public ThreadManagementService(TicketProcessor ticketProcessor) {
-        this.ticketProcessor = ticketProcessor;
-    }
+    private AtomicInteger vendorThreadCounter = new AtomicInteger(0);
+    private AtomicInteger customerThreadCounter = new AtomicInteger(0);
 
     /**
      * Starts the Vendor thread which will add tickets to the pool.
@@ -33,8 +34,12 @@ public class ThreadManagementService {
      */
     public void startVendorThread(SystemConfig systemConfig) {
         try {
-            VendorThread vendorThread = new VendorThread(systemConfig, ticketProcessor);
+            vendorThreadCounter.incrementAndGet();
+            String vendorName = "Vendor" + vendorThreadCounter.get();
+            Thread vendorThread = new VendorThread(systemConfig, ticketProcessor);
+            vendorThread.setName(vendorName);
             vendorThread.start();
+            vendorThreads.put(vendorThread.getName(), vendorThread);
             logger.info("Vendor thread started successfully.");
         } catch (Exception e) {
             logger.error("Error starting vendor thread", e);
@@ -49,8 +54,12 @@ public class ThreadManagementService {
      */
     public void startCustomerThread(SystemConfig systemConfig) {
         try {
-            CustomerThread customerThread = new CustomerThread(systemConfig, ticketProcessor);
+            customerThreadCounter.incrementAndGet();
+            String customerName = "Customer" + customerThreadCounter.get();
+            Thread customerThread = new CustomerThread(systemConfig, ticketProcessor);
+            customerThread.setName(customerName);
             customerThread.start();
+            customerThreads.put(customerName, customerThread);
             logger.info("Customer thread started successfully.");
         } catch (Exception e) {
             logger.error("Error starting customer thread", e);
@@ -60,15 +69,18 @@ public class ThreadManagementService {
     /**
      * Stops both the vendor and customer threads gracefully.
      */
-    public void stopThreads() {
-        // Implement logic to stop both threads gracefully (e.g., by setting flags or interrupting)
-        if (VendorThread.isRunning.get()) {
+    public void stopVendorThread() {
+        for (Thread thread : vendorThreads.values()) {
             VendorThread.isRunning.set(false);
-            logger.info("Vendor thread stopped.");
+            thread.interrupt();
         }
+        logger.info("Vendor thread stopped.");
+    }
 
-        if (CustomerThread.isRunning.get()) {
+    public void stopCustomerThread() {
+        for (Thread thread : customerThreads.values()) {
             CustomerThread.isRunning.set(false);
+            thread.interrupt();
             logger.info("Customer thread stopped.");
         }
     }

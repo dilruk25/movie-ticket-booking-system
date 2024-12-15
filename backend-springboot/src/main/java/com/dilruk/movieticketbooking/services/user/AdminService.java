@@ -17,7 +17,7 @@ import java.util.List;
  * Service class handling admin-related functionalities, including system configuration and user management.
  */
 @Service
-public class AdminService extends AbstractUserService {
+public class AdminService extends UserService {
 
     private SystemConfig systemConfig;
 
@@ -43,8 +43,7 @@ public class AdminService extends AbstractUserService {
         systemConfig.setTicketReleaseRate(configRequest.getTicketReleaseRate());
         systemConfig.setCustomerRetrievalRate(configRequest.getCustomerRetrievalRate());
 
-        logger.info("System configured: Total Tickets: {}, Max Ticket Capacity: {}, Ticket Release Rate: {}, Customer Retrieval Rate: {}",
-                configRequest.getTotalTickets(), configRequest.getMaxTicketCapacity(), configRequest.getTicketReleaseRate(), configRequest.getCustomerRetrievalRate());
+        logger.info("System configured: Total Tickets: {}, Max Ticket Capacity: {}, Ticket Release Rate: {}, Customer Retrieval Rate: {}", configRequest.getTotalTickets(), configRequest.getMaxTicketCapacity(), configRequest.getTicketReleaseRate(), configRequest.getCustomerRetrievalRate());
     }
 
     /**
@@ -52,7 +51,6 @@ public class AdminService extends AbstractUserService {
      *
      * @return List of {@link UserDTO} representing admins.
      */
-    @Override
     public List<UserDTO> getAllUsers() {
         List<User> admins = userRepository.findUsersByRole(UserRole.ROLE_ADMIN);
         return admins.stream().map(userMapper::fromEntityToDto).toList();
@@ -65,26 +63,22 @@ public class AdminService extends AbstractUserService {
      * @return {@link UserDTO} representing the retrieved admin.
      * @throws UserNotFoundException If admin not found with the provided user ID.
      */
-    @Override
     public UserDTO getUserByUserId(String userId) {
-        User existAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId)
-                .orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
+        User existAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId).orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
 
         return userMapper.fromEntityToDto(existAdmin);
     }
 
     /**
-     * Updates an existing admin's information.
+     * Updates an existing admin information.
      *
      * @param userId  The user ID of the admin to update.
      * @param userDTO The updated admin information.
      * @return {@link UserDTO} representing the updated admin.
      * @throws UserNotFoundException If admin not found with the provided user ID.
      */
-    @Override
     public UserDTO updateUser(String userId, UserDTO userDTO) {
-        User existingAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId)
-                .orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
+        User existingAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId).orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
 
         existingAdmin.setName(userDTO.getName());
         existingAdmin.setEmail(userDTO.getEmail());
@@ -103,10 +97,8 @@ public class AdminService extends AbstractUserService {
      * @param userId The user ID of the admin to delete.
      * @throws UserNotFoundException If admin not found with the provided user ID.
      */
-    @Override
     public void deleteUser(String userId) {
-        User existAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId)
-                .orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
+        User existAdmin = userRepository.findUserByRoleAndUserId(UserRole.ROLE_ADMIN, userId).orElseThrow(() -> new UserNotFoundException("Admin not found with the id: " + userId));
 
         userRepository.delete(existAdmin);
         logger.info("Admin deleted successfully: {}", userId);

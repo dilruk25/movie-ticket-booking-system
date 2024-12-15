@@ -19,7 +19,7 @@ import java.util.List;
  * Service class handling vendor related functionalities.
  */
 @Service
-public class VendorService extends AbstractUserService {
+public class VendorService extends UserService {
 
     public VendorService(UserRepository userRepository, MovieServiceImpl movieService, UserMapper userMapper) {
         super(userRepository, userMapper, movieService);
@@ -30,7 +30,6 @@ public class VendorService extends AbstractUserService {
      *
      * @return List of {@link UserDTO} representing vendors.
      */
-    @Override
     public List<UserDTO> getAllUsers() {
         List<User> vendors = userRepository.findUsersByRole(UserRole.ROLE_VENDOR);
         return vendors.stream().map(userMapper::fromEntityToDto).toList();
@@ -43,7 +42,6 @@ public class VendorService extends AbstractUserService {
      * @return {@link UserDTO} representing the retrieved vendor.
      * @throws UserNotFoundException If vendor not found with the provided user ID.
      */
-    @Override
     public UserDTO getUserByUserId(String userId) {
         User existVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_CUSTOMER, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
@@ -59,7 +57,6 @@ public class VendorService extends AbstractUserService {
      * @return {@link UserDTO} representing the updated vendor.
      * @throws UserNotFoundException If vendor not found with the provided user ID.
      */
-    @Override
     public UserDTO updateUser(String userId, UserDTO userDTO) {
         User existingVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_VENDOR, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
@@ -81,7 +78,6 @@ public class VendorService extends AbstractUserService {
      * @param userId The user ID of the vendor to delete.
      * @throws UserNotFoundException If vendor not found with the provided user ID.
      */
-    @Override
     public void deleteUser(String userId) {
         User existVendor = userRepository.findUserByRoleAndUserId(UserRole.ROLE_VENDOR, userId)
                 .orElseThrow(() -> new UserNotFoundException("Vendor not found with the id: " + userId));
@@ -92,13 +88,12 @@ public class VendorService extends AbstractUserService {
 
     /**
      * Overrides the base method to perform a vendor specific action.
-     *
+     * <p>
      * This implementation creates a new `VendorThread` instance with the provided configuration and ticket pool.
      *
-     * @param systemConfig The system configuration object containing relevant settings for the vendor.
+     * @param systemConfig    The system configuration object containing relevant settings for the vendor.
      * @param ticketProcessor the ticket processor object used by the thread to process tickets
      */
-    @Override
     public void performAction(SystemConfig systemConfig, TicketProcessor ticketProcessor) {
         new VendorThread(systemConfig, ticketProcessor).start();
         logger.info("Vendor thread started");

@@ -5,6 +5,7 @@ import com.dilruk.movieticketbooking.utils.IdGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.Year;
 
@@ -14,7 +15,7 @@ public class MovieDTO {
 
     private String movieId;
     private String title;
-    private LocalTime duration;
+    private Duration duration;
     private String genre;
     private double rating;
     private Year year;
