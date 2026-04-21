@@ -1,0 +1,116 @@
+# =========================
+
+# General / OS
+
+# =========================
+
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+
+# =========================
+
+# IDEs / Editors
+
+# =========================
+
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# =========================
+
+# Node / Angular
+
+# =========================
+
+node_modules/
+dist/
+tmp/
+out-tsc/
+coverage/
+.npm/
+.angular/
+.angular/cache
+
+# Angular environment files (optional depending on your setup)
+
+src/environments/*.local.ts
+
+# =========================
+
+# Java / Spring Boot
+
+# =========================
+
+# Maven
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+
+# Gradle
+
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Logs
+
+logs/
+*.log
+
+# =========================
+
+# Compiled / binaries
+
+# =========================
+
+*.class
+*.jar
+*.war
+*.ear
+
+# =========================
+
+# Environment / secrets
+
+# =========================
+
+.env
+.env.*
+*.env
+application-*.yml
+application-*.properties
+
+# Keep default configs if needed
+
+!src/main/resources/application.yml
+!src/main/resources/application.properties
+
+# =========================
+
+# Testing
+
+# =========================
+
+coverage/
+test-output/
+
+# =========================
+
+# Misc
+
+# =========================
+
+.cache/
+.temp/
+.sass-cache/
+.eslintcache
+
