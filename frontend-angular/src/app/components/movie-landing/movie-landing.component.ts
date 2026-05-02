@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
 import { MovieDTO } from '../../models/movie.model';
 import {RouterLink} from '@angular/router';
-import {NgForOf} from '@angular/common';
+
 
 @Component({
   selector: 'app-movie-landing',
   templateUrl: './movie-landing.component.html',
   imports: [
-    RouterLink,
-    NgForOf
-  ],
+    RouterLink
+],
   styleUrls: ['./movie-landing.component.css'] // Optional: Create a CSS file for styling
 })
 export class MovieLandingComponent implements OnInit {
