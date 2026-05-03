@@ -1,0 +1,68 @@
+<mat-sidenav-container class="container">
+
+  <!-- ================= DRAWER ================= -->
+  <mat-sidenav
+    #drawer
+    [autoFocus]="false"
+    class="drawer"
+    mode="over">
+
+    <div class="drawer-header">
+      <span class="logo">Ticket Corner</span>
+    </div>
+
+    <mat-nav-list>
+
+      <a (click)="drawer.close()" mat-list-item routerLink="/movies">
+        Movies
+      </a>
+
+      <a (click)="drawer.close()" mat-list-item routerLink="/booking">
+        Booking
+      </a>
+
+      <a (click)="drawer.close()" mat-list-item routerLink="/tickets">
+        My Tickets
+      </a>
+
+    </mat-nav-list>
+
+    <div class="drawer-footer">
+      <button color="primary" matButton="outlined">
+        Login
+      </button>
+    </div>
+
+  </mat-sidenav>
+
+  <!-- ================= TOP APP BAR ================= -->
+  <mat-toolbar class="app-bar">
+
+    <!-- logo -->
+    <span class="logo">Ticket Corner</span>
+
+    <span class="spacer"></span>
+    <!-- Hamburger (mobile only) -->
+    <button
+      (click)="drawer.toggle()"
+      class="menu-btn"
+      mat-icon-button>
+
+      <mat-icon>menu</mat-icon>
+    </button>
+    <!-- Desktop navigation -->
+    <div class="desktop-nav">
+
+      <a mat-button routerLink="/movies">Movies</a>
+      <a mat-button routerLink="/booking">Booking</a>
+      <a mat-button routerLink="/tickets">My Tickets</a>
+
+      <button color="primary" matButton="outlined">
+        Login
+      </button>
+
+    </div>
+
+  </mat-toolbar>
+
+</mat-sidenav-container>

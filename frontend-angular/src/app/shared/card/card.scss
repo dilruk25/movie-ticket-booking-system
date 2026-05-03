@@ -1,0 +1,58 @@
+.card {
+  //max-width: 18rem;
+  //max-height: 18rem;
+  //min-width: 10rem;
+  //min-height: 10rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (min-width: 320px) {
+
+  .card {
+    width: 13rem;
+  }
+}
+
+@media (min-width: 375px) {
+
+  .card {
+    width: 16.5rem;
+  }
+}
+
+@media (min-width: 425px) {
+
+  .card {
+    width: 19.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .card {
+    width: 20rem;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .card {
+    width: 13.5rem;
+  }
+}
+
+@media (min-width: 1440px) {
+
+  .card {
+    width: 15.75rem;
+  }
+}
+
+@media (min-width: 2560px) {
+
+  .card {
+    width: 29.75rem;
+  }
+}

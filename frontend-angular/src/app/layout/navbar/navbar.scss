@@ -1,0 +1,80 @@
+.container {
+  z-index: 1000;
+}
+
+/* ================= DRAWER ================= */
+.drawer {
+  --mat-list-list-item-label-text-size: 14px;
+  font-weight: bolder;
+  width: 280px;
+  border-radius: 0 12px 12px 0;
+}
+
+.drawer-header {
+  padding: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.drawer-footer {
+  margin-top: auto;
+  padding: 16px;
+}
+
+/* ================= TOP BAR ================= */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: var(--mat-sys-surface);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  transition: box-shadow 200ms ease;
+}
+
+.app-bar:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Desktop nav */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Hamburger hidden on desktop */
+.menu-btn {
+  display: none;
+}
+
+/* ================= ANIMATIONS (M3 FEEL) ================= */
+mat-sidenav {
+  transition: transform 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ================= RESPONSIVE ================= */
+// For Tablets and Mobile
+@media (max-width: 600px) {
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  .drawer {
+    position: fixed;
+    z-index: 1001;
+    width: 280px;
+    border-radius: 0 12px 12px 0;
+  }
+}

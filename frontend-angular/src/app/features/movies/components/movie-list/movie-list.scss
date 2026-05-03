@@ -1,0 +1,11 @@
+.movie-list {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  padding: 1.5rem;
+  background: greenyellow;
+  overflow: hidden;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
