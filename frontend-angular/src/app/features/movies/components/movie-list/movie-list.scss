@@ -1,11 +1,25 @@
 .movie-list {
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin: 0 2rem;
   padding: 1.5rem;
   background: greenyellow;
-  overflow: hidden;
-  height: auto;
-  display: flex;
-  flex-wrap: wrap;
+
+  display: grid;
+
+  /* Responsive grid:
+   auto-fit → automatically creates as many columns as space allows
+   minmax(14rem, 1fr) → each card has a minimum width of 14rem and grows evenly
+   using 1fr ensures flexible equal distribution of remaining space */
+
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+
+  /* Responsive grid:
+   auto-fit → auto places cards based on available width
+   minmax(14rem, 18rem) → cards stay within a consistent size range
+   ensures uniform card appearance like Netflix-style layouts */
+
+  //grid-template-columns: repeat(auto-fit, minmax(14rem, 18rem));
+
   gap: 16px;
+
+  align-items: start;
 }
